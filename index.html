@@ -1,0 +1,1956 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نواة — استوديو تصميم وتطوير مواقع في تونس</title>
+<meta name="description" content="نواة استوديو تونسي لتصميم وتطوير مواقع الشركات والمتاجر الإلكترونية وصفحات الهبوط. تصميم فاخر، تجربة استخدام سلسة، وأداء سريع.">
+<meta name="theme-color" content="#08090c">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_TN">
+<meta property="og:title" content="نواة — استوديو تصميم وتطوير مواقع في تونس">
+<meta property="og:description" content="مواقع للشركات والمتاجر، مصممة بعناية ومطوّرة لتُستخدم بسهولة.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2308090c'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%23d8b77d' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23d8b77d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+/* ---------- Tokens ---------- */
+:root{
+  --bg:#08090c;
+  --bg-2:#0d0f14;
+  --bg-3:#14171e;
+  --line:rgba(242,239,232,.08);
+  --line-2:rgba(242,239,232,.15);
+  --text:#f2efe8;
+  --muted:rgba(242,239,232,.63);
+  --faint:rgba(242,239,232,.56);
+  --gold:#d8b77d;
+  --gold-2:#f0d6a4;
+  --gold-ink:#100d08;
+  --mint:#7de2d1;
+  --ease:cubic-bezier(.32,.72,0,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --r-card:26px;
+  --r-inner:20px;
+  --gutter:clamp(18px,4vw,64px);
+  --nav-h:78px;
+  --speed:0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color-scheme:dark;-webkit-text-size-adjust:100%;scroll-behavior:auto;scrollbar-gutter:stable}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:
+    radial-gradient(ellipse 75% 48% at 12% -4%,rgba(216,183,125,.075),transparent 62%),
+    radial-gradient(ellipse 60% 42% at 92% 24%,rgba(125,226,209,.035),transparent 65%),
+    var(--bg);
+  color:var(--text);font-family:"Tajawal",system-ui,sans-serif;font-size:16.5px;line-height:1.75;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body.is-loading{overflow:hidden}
+body.menu-open{overflow:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--gold);color:var(--gold-ink)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:6px}
+section[id]{scroll-margin-top:88px}
+.display{font-weight:800;line-height:1.08;letter-spacing:0}
+.gold{color:var(--gold)}
+.muted{color:var(--muted)}
+.tnum{font-variant-numeric:tabular-nums}
+.wrap{width:100%;max-width:1440px;margin:0 auto;padding:0 var(--gutter)}
+.line{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.08em}
+.line>span{display:inline-block;will-change:transform}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip-link{position:fixed;top:-80px;inset-inline-start:16px;z-index:80;background:var(--gold);color:var(--gold-ink);padding:10px 18px;border-radius:999px;font-weight:700;transition:top .3s var(--ease)}
+.skip-link:focus{top:12px}
+
+/* Grain */
+body::after{
+  content:"";position:fixed;inset:-50%;z-index:50;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* Scroll progress */
+.progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:60;pointer-events:none;background:rgba(242,239,232,.05)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,transparent,var(--gold));transform:scaleX(0);transform-origin:right}
+
+/* ---------- WebGL stage ---------- */
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+body.no-gl #gl{display:none}
+body.no-gl .hero::before{
+  background:
+    radial-gradient(circle at 22% 46%,rgba(216,183,125,.18) 0,rgba(216,183,125,.05) 18%,transparent 46%),
+    radial-gradient(ellipse 55% 55% at 20% 44%,rgba(216,183,125,.11),transparent 68%),
+    radial-gradient(ellipse 40% 40% at 72% 20%,rgba(125,226,209,.045),transparent 70%);
+}
+body.no-gl .explode::after{
+  content:"";position:absolute;left:50%;top:50%;width:min(46vw,460px);aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  border:1px solid rgba(216,183,125,.18);
+  box-shadow:0 0 0 26px rgba(216,183,125,.035),0 0 0 70px rgba(216,183,125,.02),inset 0 0 90px rgba(216,183,125,.06);
+}
+main{position:relative;z-index:1}
+.solid{background:var(--bg);position:relative}
+
+/* ---------- Loader ---------- */
+.loader{position:fixed;inset:0;z-index:70;background:var(--bg);display:grid;align-content:end;padding:var(--gutter)}
+.loader-count{font-size:clamp(5rem,18vw,17rem);line-height:.82;font-weight:800;color:var(--text);letter-spacing:-.03em}
+.loader-count small{font-size:.24em;color:var(--gold);margin-inline-start:.1em;vertical-align:top;font-weight:500}
+.loader-bar{height:2px;background:var(--line);margin-top:26px;overflow:hidden}
+.loader-bar i{display:block;height:100%;background:var(--gold);transform-origin:right;transform:scaleX(0)}
+.loader-meta{display:flex;justify-content:space-between;margin-top:14px;color:var(--muted);font-size:14px;letter-spacing:.02em}
+
+/* ---------- Buttons ---------- */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:14px;white-space:nowrap;
+  height:56px;padding:0 8px 0 26px;border-radius:999px;font-weight:700;font-size:15.5px;
+  transition:transform .5s var(--ease),background-color .5s var(--ease),color .5s var(--ease),box-shadow .5s var(--ease);
+}
+.btn:active{transform:scale(.98)}
+.btn .ico{width:40px;height:40px;border-radius:999px;display:grid;place-items:center;font-size:18px;transition:transform .6s var(--ease)}
+.btn:hover .ico{transform:translate(-3px,-2px) scale(1.05)}
+.btn-gold{background:var(--gold);color:var(--gold-ink);box-shadow:0 12px 40px -18px rgba(216,183,125,.55)}
+.btn-gold .ico{background:var(--gold-ink);color:var(--gold)}
+.btn-gold:hover{background:var(--gold-2)}
+.btn-ghost{background:rgba(242,239,232,.05);color:var(--text);box-shadow:inset 0 0 0 1px var(--line-2)}
+.btn-ghost .ico{background:rgba(242,239,232,.07)}
+.btn-ghost:hover{background:rgba(242,239,232,.09);box-shadow:inset 0 0 0 1px rgba(242,239,232,.25)}
+.btn-sm{height:46px;padding:0 6px 0 20px;font-size:14px;gap:10px}
+.btn-sm .ico{width:32px;height:32px;font-size:15px}
+
+/* ---------- Nav ---------- */
+.nav::before{content:"";position:absolute;inset:0 0 -28px;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,rgba(8,9,12,.9),rgba(8,9,12,0))}
+.nav{position:fixed;top:0;left:0;right:0;z-index:35;padding:14px var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:24px;height:var(--nav-h)}
+.brand{display:inline-flex;align-items:center;gap:11px;font-weight:800;font-size:21px;line-height:1}
+.brand-mark{width:28px;height:28px;border-radius:50%;border:1px solid rgba(216,183,125,.7);position:relative;display:inline-grid;place-items:center;flex:none}
+.brand-mark::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px rgba(216,183,125,.8)}
+.brand-mark::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(216,183,125,.22);border-top-color:transparent;transform:rotate(-35deg)}
+.brand small{display:block;font-size:8px;letter-spacing:.32em;color:var(--gold);font-weight:500;margin-top:4px;direction:ltr;text-align:start}
+.nav-links{
+  position:relative;display:flex;gap:2px;padding:5px;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.018));
+  backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),inset 0 1px 0 rgba(255,255,255,.12),0 10px 30px -12px rgba(0,0,0,.7);
+}
+.nav-links a{position:relative;z-index:1;padding:9px 14px;border-radius:999px;font-size:14px;color:var(--muted);transition:color .45s var(--ease)}
+.nav-links a:hover,.nav-links a.is-hover,.nav-links a.is-active{color:var(--text)}
+.nav-links a.is-active{color:var(--gold)}
+.nav-glide{
+  position:absolute;top:5px;left:0;height:calc(100% - 10px);width:0;border-radius:999px;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.2);
+  will-change:transform,width;transition:opacity .35s var(--ease);
+}
+.nav-links.has-glide .nav-glide{opacity:1}
+.nav-right{display:flex;align-items:center;gap:10px}
+.burger{display:none;width:46px;height:46px;border-radius:999px;position:relative;background:rgba(17,19,24,.7);box-shadow:inset 0 0 0 1px var(--line-2);flex:none}
+.burger i{position:absolute;left:14px;right:14px;height:1.5px;background:var(--text);transition:transform .6s var(--ease),top .6s var(--ease)}
+.burger i:nth-child(1){top:19px}.burger i:nth-child(2){top:26px}
+.menu-open .burger i:nth-child(1){top:22.5px;transform:rotate(45deg)}
+.menu-open .burger i:nth-child(2){top:22.5px;transform:rotate(-45deg)}
+.menu{
+  position:fixed;inset:0;z-index:30;background:rgba(8,9,12,.9);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  display:flex;flex-direction:column;justify-content:center;padding:calc(var(--nav-h) + 24px) var(--gutter) 32px;gap:8px;
+  opacity:0;visibility:hidden;transition:opacity .6s var(--ease),visibility 0s linear .6s;overflow-y:auto;
+}
+.menu-links{display:grid;gap:2px}
+.menu-links a{font-size:clamp(2.1rem,8vw,3.8rem);font-weight:800;line-height:1.25;transform:translateY(30px);opacity:0;transition:transform .7s var(--ease),opacity .7s var(--ease),color .3s}
+.menu-links a:hover{color:var(--gold)}
+.menu-open .menu{opacity:1;visibility:visible;transition:opacity .6s var(--ease)}
+.menu-open .menu-links a{transform:none;opacity:1}
+.menu-open .menu-links a:nth-child(2){transition-delay:.04s}.menu-open .menu-links a:nth-child(3){transition-delay:.08s}
+.menu-open .menu-links a:nth-child(4){transition-delay:.12s}.menu-open .menu-links a:nth-child(5){transition-delay:.16s}
+.menu-open .menu-links a:nth-child(6){transition-delay:.2s}.menu-open .menu-links a:nth-child(7){transition-delay:.24s}
+.menu-open .nav{z-index:36}
+.menu-foot{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 28px;color:var(--muted);font-size:14px}
+.menu-foot a{color:var(--text)}
+.menu-foot a:hover{color:var(--gold)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100dvh;display:grid;align-content:end;padding:calc(var(--nav-h) + 48px) 0 clamp(24px,3.6vw,46px);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(ellipse 55% 55% at 20% 44%,rgba(216,183,125,.11),transparent 68%),
+  radial-gradient(ellipse 40% 40% at 72% 20%,rgba(125,226,209,.045),transparent 70%);
+}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:34vh;pointer-events:none;background:linear-gradient(to top,var(--bg) 4%,rgba(8,9,12,.7) 36%,transparent)}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:end}
+.hero-copy{grid-column:1;max-width:760px;padding-bottom:clamp(10px,4vh,48px)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--gold);letter-spacing:.02em;margin-bottom:22px;padding:7px 14px 7px 10px;border-radius:999px;background:rgba(216,183,125,.07);box-shadow:inset 0 0 0 1px rgba(216,183,125,.18)}
+.hero-eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px rgba(216,183,125,.9)}
+.hero h1{font-size:clamp(3.5rem,7vw,6.6rem);line-height:1.12;font-weight:800;letter-spacing:-.01em}
+.hero h1 .gold{position:relative}
+.hero-sub{font-size:clamp(1rem,1.25vw,1.15rem);color:var(--muted);max-width:52ch;line-height:1.85;margin:26px 0 30px}
+.hero-sub strong{color:var(--text);font-weight:500}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:10px}
+.hero-meta{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:18px 30px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:clamp(34px,6vh,64px);padding-top:16px;color:var(--muted);font-size:13.5px}
+.hero-meta-list{display:flex;align-items:center;gap:8px 26px;flex-wrap:wrap}
+.hero-meta-list span{display:inline-flex;align-items:center;gap:8px}
+.hero-meta-list i{color:var(--gold);font-size:15px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#8fe3b0;box-shadow:0 0 0 4px rgba(143,227,176,.1);animation:pulse 2.4s var(--ease) infinite}
+@keyframes pulse{50%{opacity:.5;box-shadow:0 0 0 7px rgba(143,227,176,.02)}}
+.scroll-cue{display:inline-flex;align-items:center;gap:10px;color:var(--faint);font-size:12px;letter-spacing:.04em}
+.scroll-cue i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line-2);animation:bob 2.6s var(--ease) infinite}
+@keyframes bob{50%{transform:translateY(4px)}}
+
+/* ---------- Section headings ---------- */
+.sec-head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:30px 48px;align-items:end;margin-bottom:clamp(36px,5vw,64px)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:500;color:var(--gold);margin-bottom:16px;letter-spacing:.06em}
+.eyebrow i{font-size:15px}
+.sec-head h2{font-size:clamp(2.3rem,4.6vw,4.7rem);line-height:1.14;max-width:17ch}
+.sec-head p{color:var(--muted);font-size:15.5px;line-height:1.85;max-width:44ch;padding-bottom:6px}
+
+/* ---------- Manifesto ---------- */
+.manifesto{padding:clamp(110px,15vw,210px) 0}
+.manifesto .sec-kicker{display:flex;align-items:center;gap:12px;color:var(--faint);font-size:12px;letter-spacing:.14em;margin-bottom:30px}
+.manifesto .sec-kicker b{color:var(--gold);font-weight:500}
+.manifesto .sec-kicker::after{content:"";width:80px;height:1px;background:var(--line-2)}
+.manifesto p{font-size:clamp(1.8rem,4.1vw,4.2rem);line-height:1.38;font-weight:500;max-width:30ch;color:var(--text)}
+.manifesto .w{opacity:.42}
+.manifesto .gold.w{opacity:.55}
+
+/* ---------- Exploded stage ---------- */
+.explode{position:relative;height:100dvh;display:grid;grid-template-rows:auto 1fr auto;padding:calc(var(--nav-h) + 30px) 0 clamp(24px,3.6vw,44px);overflow:hidden}
+.explode::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 48% 52% at 50% 48%,rgba(8,9,12,.18),rgba(8,9,12,.62) 88%)}
+.explode-intro{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end}
+.explode h2{font-size:clamp(2.3rem,4.8vw,5rem);line-height:1.1;max-width:14ch}
+.explode-intro p{color:var(--muted);max-width:43ch;margin-top:16px;font-size:15.5px}
+.explode-readout{justify-self:end;text-align:end;padding-bottom:6px}
+.explode-readout b{display:block;font-size:clamp(3.4rem,7vw,7rem);font-weight:800;line-height:.9;color:var(--text)}
+.explode-readout b small{font-size:.3em;color:var(--gold);font-weight:500;margin-inline-start:.15em}
+.explode-readout span{color:var(--muted);font-size:13.5px}
+.parts{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,28px)}
+.part{padding-top:18px;position:relative;opacity:.3;transition:opacity .6s var(--ease)}
+.part::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--line-2)}
+.part::after{content:"";position:absolute;top:0;left:0;height:2px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .8s var(--ease)}
+.part.on{opacity:1}
+.part.on::after{transform:scaleX(1)}
+.part h3{font-size:19px;font-weight:700;display:flex;align-items:center;gap:9px;line-height:1.4}
+.part h3 i{font-size:19px;color:var(--gold)}
+.part p{color:var(--muted);font-size:14px;margin-top:6px;max-width:31ch;line-height:1.75}
+
+/* ---------- Services ---------- */
+.services{padding:clamp(100px,13vw,180px) 0}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.shell{padding:6px;border-radius:var(--r-card);background:rgba(242,239,232,.028);box-shadow:inset 0 0 0 1px var(--line)}
+.core{height:100%;border-radius:var(--r-inner);background:var(--bg-2);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);position:relative;overflow:hidden;padding:clamp(22px,2.6vw,34px);display:flex;flex-direction:column}
+.svc{position:relative;transition:background .5s var(--ease),box-shadow .5s var(--ease)}
+.svc::after{content:"";position:absolute;inset:0;border-radius:var(--r-card);pointer-events:none;box-shadow:inset 0 0 0 1px rgba(216,183,125,0);transition:box-shadow .5s var(--ease)}
+.svc:hover::after{box-shadow:inset 0 0 0 1px rgba(216,183,125,.28)}
+.svc-feature{grid-column:span 2;grid-row:span 2}
+.svc-store{grid-column:span 2}
+.svc-land,.svc-ux{grid-column:span 1}
+.svc-feature .core{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(18px,2.4vw,34px);align-items:center;padding:clamp(24px,3vw,40px)}
+.svc-copy{display:flex;flex-direction:column;height:100%;min-width:0}
+.svc-ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:rgba(216,183,125,.09);box-shadow:inset 0 0 0 1px rgba(216,183,125,.2);color:var(--gold);font-size:22px;margin-bottom:auto}
+.svc h3{font-size:clamp(1.35rem,2.1vw,1.9rem);line-height:1.35;font-weight:700;margin-top:22px}
+.svc p{color:var(--muted);font-size:14.5px;line-height:1.8;margin-top:9px;max-width:36ch}
+.svc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.svc-tags span{font-size:11.5px;color:var(--faint);padding:5px 10px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line)}
+.svc-link{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--gold);margin-top:20px;transition:gap .35s var(--ease)}
+.svc-link:hover{gap:11px}
+.svc-store .core{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:24px;align-items:center;padding:clamp(24px,2.8vw,36px)}
+.svc-land .core,.svc-ux .core{min-height:308px}
+.svc-land .svc-ico,.svc-ux .svc-ico{margin-bottom:auto}
+.svc-visual{position:relative;min-width:0}
+
+/* ---------- Browser / UI mockups (all CSS, no image assets) ---------- */
+.mock{
+  --m-bg:#0e1016;--m-ink:#f2efe8;--m-soft:rgba(242,239,232,.16);--m-accent:#d8b77d;--m-line:rgba(255,255,255,.1);--m-btn-ink:#100d08;
+  position:relative;width:100%;border-radius:14px;overflow:hidden;background:var(--m-bg);color:var(--m-ink);
+  border:1px solid var(--m-line);box-shadow:0 26px 60px -32px rgba(0,0,0,.95);font-size:clamp(8px,.62vw,11px);
+}
+.mock-bar{display:flex;align-items:center;gap:.7em;height:2.5em;padding:0 1em;background:rgba(255,255,255,.04);border-bottom:1px solid var(--m-line)}
+.mock-dots{display:flex;gap:.38em}
+.mock-dots i{width:.52em;height:.52em;border-radius:50%;background:var(--m-soft)}
+.mock-url{margin:0 auto;font-size:.7em;letter-spacing:.16em;opacity:.42;direction:ltr}
+.mock-page{padding:1.35em 1.45em 1.55em;display:grid;gap:1.1em}
+.mock-nav{display:flex;align-items:center;justify-content:space-between;gap:1em}
+.m-brand{font-weight:800;font-size:1.22em;line-height:1.1;white-space:nowrap}
+.m-brand small{display:block;font-size:.52em;opacity:.45;font-weight:400;letter-spacing:.14em}
+.m-links{display:flex;align-items:center;gap:.7em}
+.m-links i{width:2.1em;height:.26em;border-radius:99px;background:currentColor;opacity:.22}
+.m-links .m-pill{width:4.8em;height:1.5em;border-radius:99px;background:var(--m-accent);opacity:1}
+.m-hero{display:grid;grid-template-columns:1.06fr .94fr;gap:1.2em;align-items:center}
+.m-kicker{font-size:.66em;letter-spacing:.18em;color:var(--m-accent);text-transform:uppercase;font-weight:500}
+.m-title{font-weight:800;font-size:2em;line-height:1.16;margin:.28em 0 .4em}
+.m-title em{font-style:normal;color:var(--m-accent)}
+.m-lines{display:grid;gap:.34em;max-width:15em}
+.m-lines i{height:.26em;background:currentColor;opacity:.15;border-radius:99px}
+.m-lines i:nth-child(2){width:82%}
+.m-lines i:nth-child(3){width:56%}
+.m-btn{display:inline-flex;align-items:center;justify-content:center;margin-top:.85em;font-size:.7em;font-weight:700;padding:.8em 1.2em;border-radius:99px;background:var(--m-accent);color:var(--m-btn-ink);white-space:nowrap}
+.m-art{position:relative;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 26%,var(--art-a,#e5c78f),var(--art-b,#6d5329) 56%,var(--art-c,#17130c));box-shadow:inset 0 0 0 1px rgba(255,255,255,.17),0 20px 44px -22px #000;overflow:hidden}
+.m-art::before{content:"";position:absolute;inset:11%;border:1px solid rgba(255,255,255,.22);border-radius:50%}
+.m-art::after{content:"";position:absolute;inset:26%;border:1px solid rgba(255,255,255,.13);border-radius:50%}
+.m-art .glyph{position:absolute;inset:0;display:grid;place-items:center;font-size:4em;font-weight:800;color:var(--m-ink);opacity:.93;text-shadow:0 .08em .3em rgba(0,0,0,.4);line-height:1}
+.m-art.square{border-radius:5px}
+.m-art.square::before,.m-art.square::after{border-radius:3px}
+.m-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.55em;margin-top:.15em}
+.m-tile{background:var(--m-soft);border-radius:.55em;padding:.5em;display:grid;gap:.32em}
+.m-tile .thumb{height:3.2em;border-radius:.4em;background:linear-gradient(135deg,var(--tile-a,#493b25),var(--tile-b,#151820))}
+.m-tile i{height:.22em;border-radius:99px;background:currentColor;opacity:.22}
+.m-tile i:last-child{width:58%}
+.m-logos{display:flex;justify-content:space-between;gap:1em;padding-top:.2em;opacity:.38}
+.m-logos i{height:.3em;width:3.4em;border-radius:99px;background:currentColor}
+.m-shop-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1em}
+.m-products{display:grid;grid-template-columns:repeat(3,1fr);gap:.6em}
+.m-product{background:var(--m-soft);border-radius:.55em;padding:.45em;display:grid;gap:.3em}
+.m-product .ph{height:3.6em;border-radius:.4em;background:linear-gradient(135deg,var(--p-a,#3b2f22),var(--p-b,#12151c))}
+.m-product i{height:.22em;border-radius:99px;background:currentColor;opacity:.24}
+.m-product i:last-child{width:46%;opacity:.45}
+.mock--light{--m-bg:#f0ece3;--m-ink:#1d1a15;--m-soft:rgba(29,26,21,.1);--m-accent:#6d7c52;--m-line:rgba(29,26,21,.13);--m-btn-ink:#f7f4ea}
+.mock--green{--m-bg:#0b1a14;--m-ink:#f1ede2;--m-soft:rgba(241,237,226,.12);--m-accent:#c9a96a;--m-line:rgba(241,237,226,.13);--m-btn-ink:#0b1410}
+.mock--arch{--m-bg:#ebeae5;--m-ink:#161614;--m-soft:rgba(22,22,20,.09);--m-accent:#161614;--m-line:rgba(22,22,20,.14);--m-btn-ink:#f6f3ea}
+.mock--pulse{--m-bg:#0b0d18;--m-ink:#f4f1ff;--m-soft:rgba(244,241,255,.11);--m-accent:#ff8a6b;--m-line:rgba(244,241,255,.12);--m-btn-ink:#0b0d18}
+.mock--furniture{--m-bg:#efe9de;--m-ink:#241f18;--m-soft:rgba(36,31,24,.09);--m-accent:#6d7c52;--m-btn-ink:#f7f4ea}
+.mock--site .mock-page{min-height:25em}
+
+/* ---------- Work / horizontal gallery ---------- */
+.hz{position:relative;overflow:hidden;background:var(--bg)}
+.hz-track{display:flex;align-items:center;gap:clamp(18px,2.8vw,44px);height:100dvh;padding:0 var(--gutter);width:max-content}
+.hz-intro{width:min(38vw,520px);flex:none}
+.hz-intro h2{font-size:clamp(2.3rem,4.2vw,4.4rem);line-height:1.14}
+.hz-intro p{color:var(--muted);margin-top:18px;max-width:38ch;font-size:15px;line-height:1.85}
+.hz-note{margin-top:18px;display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--gold);padding:6px 12px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(216,183,125,.24);background:rgba(216,183,125,.05)}
+.hz-card{flex:none;display:flex;flex-direction:column;gap:14px;min-width:0}
+.hz-card .media{overflow:hidden;border-radius:24px;position:relative;display:grid;place-items:center;padding:clamp(14px,2vw,28px);box-shadow:inset 0 0 0 1px var(--line);background:
+  radial-gradient(ellipse 90% 80% at 30% 20%,rgba(216,183,125,.16),transparent 70%),
+  linear-gradient(150deg,#15181f,#0a0c10)}
+.hz-card .media .mock{width:100%}
+.demo-badge{position:absolute;top:14px;inset-inline-start:14px;z-index:2;font-size:10.5px;letter-spacing:.02em;color:var(--text);background:rgba(8,9,12,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:5px 10px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(242,239,232,.16)}
+.hz-card figcaption{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;font-size:14px;color:var(--muted);padding:0 4px}
+.hz-card figcaption strong{display:block;color:var(--text);font-weight:700;font-size:16px;line-height:1.4}
+.hz-card figcaption span{font-size:12.5px}
+.hz-card .fig-no{color:var(--gold);font-size:12px;letter-spacing:.12em}
+.hz-card.c1 .media{height:66vh;aspect-ratio:2/3;align-self:flex-start;background:radial-gradient(ellipse 80% 70% at 25% 20%,rgba(216,183,125,.2),transparent 70%),linear-gradient(160deg,#1b1a16,#0b0c0f)}
+.hz-card.c2 .media{height:56vh;aspect-ratio:3/2;background:radial-gradient(ellipse 80% 80% at 70% 20%,rgba(109,124,82,.22),transparent 70%),linear-gradient(160deg,#101a14,#090b0c)}
+.hz-card.c3{align-self:flex-start;margin-top:12vh}
+.hz-card.c3 .media{height:46vh;aspect-ratio:3/2;background:radial-gradient(ellipse 80% 80% at 25% 20%,rgba(255,255,255,.1),transparent 70%),linear-gradient(160deg,#1a1a18,#0a0a0b)}
+.hz-card.c4{align-self:flex-end;margin-bottom:10vh}
+.hz-card.c4 .media{height:56vh;aspect-ratio:3/2;background:radial-gradient(ellipse 80% 80% at 70% 20%,rgba(255,138,107,.18),transparent 70%),linear-gradient(160deg,#14101a,#090b12)}
+.hz-end{flex:none;width:28vw;max-width:380px;padding-inline-end:20px}
+.hz-end b{font-size:clamp(4rem,10vw,9rem);line-height:.8;display:block;color:var(--gold);font-weight:800}
+.hz-end h3{font-size:clamp(1.4rem,2.2vw,2rem);margin:14px 0 8px;font-weight:700}
+.hz-end p{color:var(--muted);font-size:14px;margin-bottom:20px;max-width:28ch}
+/* ---------- Why / reveal ---------- */
+.reveal{position:relative;height:100dvh;overflow:hidden;background:var(--bg)}
+.reveal-media{position:absolute;inset:0;overflow:hidden;clip-path:inset(20% 24% 20% 24% round 28px);will-change:clip-path;background:
+  radial-gradient(ellipse 60% 60% at 25% 20%,rgba(216,183,125,.16),transparent 70%),
+  radial-gradient(ellipse 50% 50% at 80% 70%,rgba(125,226,209,.07),transparent 70%),
+  linear-gradient(150deg,#11141a,#07080b)}
+.reveal-media::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(242,239,232,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(242,239,232,.045) 1px,transparent 1px);background-size:68px 68px;mask-image:radial-gradient(ellipse 65% 65% at 50% 50%,#000,transparent 78%);-webkit-mask-image:radial-gradient(ellipse 65% 65% at 50% 50%,#000,transparent 78%)}
+.reveal-media .scene{position:absolute;inset:0;display:grid;place-items:center;transform:scale(1.22);will-change:transform}
+.scene-tag{position:absolute;top:18%;inset-inline-end:14%;font-size:11px;letter-spacing:.08em;color:var(--gold);padding:6px 12px;border-radius:999px;background:rgba(8,9,12,.62);box-shadow:inset 0 0 0 1px rgba(216,183,125,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.scene-browser{width:min(980px,74vw);transform:rotate(-1.1deg);box-shadow:0 50px 110px -40px #000}
+.scene-browser .mock-page{min-height:35em;padding:1.6em}
+.dash-body{display:grid;grid-template-columns:8.8em 1fr;min-height:34em}
+.dash-side{border-inline-end:1px solid var(--m-line);padding:1.2em .9em;display:flex;flex-direction:column;gap:1em;background:rgba(255,255,255,.018)}
+.dash-side .m-brand{font-size:1.2em}
+.dash-side i{display:block;height:.3em;border-radius:99px;background:currentColor;opacity:.17;width:5.2em}
+.dash-side i.on{background:var(--m-accent);opacity:.8;width:6em}
+.dash-main{padding:1.2em 1.4em;display:grid;gap:1.1em;align-content:start}
+.dash-top{display:flex;justify-content:space-between;align-items:center;gap:1em}
+.dash-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em}
+.dash-card{border-radius:.7em;background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px var(--m-line);padding:.85em;display:grid;gap:.3em}
+.dash-card b{font-size:1.9em;line-height:1;font-weight:700;color:var(--m-ink)}
+.dash-card span{font-size:.68em;color:var(--m-soft);letter-spacing:.04em}
+.dash-card em{font-style:normal;font-size:.66em;color:var(--m-accent)}
+.dash-chart{position:relative;border-radius:.8em;background:rgba(255,255,255,.025);box-shadow:inset 0 0 0 1px var(--m-line);padding:1em;min-height:13em;overflow:hidden}
+.dash-chart svg{width:100%;height:100%;overflow:visible}
+.dash-grid{position:absolute;inset:1em;background-image:linear-gradient(rgba(242,239,232,.06) 1px,transparent 1px);background-size:100% 25%}
+.scene-phone{position:absolute;inset-inline-start:8%;bottom:6%;width:clamp(108px,11vw,158px);border-radius:1.5em;border:1px solid rgba(242,239,232,.18);background:#0b0d12;padding:.5em;box-shadow:0 30px 60px -20px #000;transform:rotate(4deg)}
+.scene-phone::before{content:"";display:block;width:2.6em;height:.3em;border-radius:99px;background:rgba(242,239,232,.2);margin:.2em auto .6em}
+.scene-phone .mock-page{padding:.5em;gap:.55em;min-height:0}
+.scene-phone .m-title{font-size:1.35em}
+.scene-phone .m-art{aspect-ratio:1.05;font-size:.72em}
+.scene-phone .m-btn{font-size:.6em}
+.scene-float{position:absolute;inset-inline-end:5%;bottom:12%;display:flex;align-items:center;gap:.55em;font-size:11px;color:var(--text);background:rgba(8,9,12,.72);box-shadow:inset 0 0 0 1px rgba(216,183,125,.25);padding:8px 13px;border-radius:999px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.scene-float i{color:var(--gold)}
+.reveal-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,9,12,.96) 2%,rgba(8,9,12,.42) 42%,transparent 65%),linear-gradient(to bottom,rgba(8,9,12,.82),transparent 30%)}
+.reveal-inner{position:absolute;inset:0;z-index:2;display:grid;grid-template-rows:1fr auto;padding:calc(var(--nav-h) + 22px) 0 clamp(24px,4vw,48px)}
+.reveal-title{font-size:clamp(2.6rem,6.4vw,7.4rem);line-height:1.12;align-self:start;max-width:16ch}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2.4vw,36px)}
+.stat{padding-top:14px;border-top:1px solid var(--line-2)}
+.stat b{display:block;font-size:clamp(1.5rem,3vw,2.5rem);line-height:1;color:var(--gold);font-weight:500}
+.stat h3{font-size:clamp(1rem,1.5vw,1.22rem);margin:9px 0 4px;font-weight:700}
+.stat p{font-size:13px;color:var(--muted);line-height:1.7;max-width:25ch}
+
+/* ---------- Process ---------- */
+.process{padding:clamp(100px,13vw,180px) 0}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;counter-reset:step}
+.step{position:relative;padding:26px 22px 24px;border-radius:20px;background:linear-gradient(170deg,rgba(242,239,232,.045),rgba(242,239,232,.012));box-shadow:inset 0 0 0 1px var(--line);min-height:240px;display:flex;flex-direction:column;transition:background .5s var(--ease),box-shadow .5s var(--ease),transform .5s var(--ease)}
+.step:hover{background:linear-gradient(170deg,rgba(216,183,125,.08),rgba(242,239,232,.015));box-shadow:inset 0 0 0 1px rgba(216,183,125,.22);transform:translateY(-4px)}
+.step .no{font-size:12px;letter-spacing:.14em;color:var(--gold);margin-bottom:auto}
+.step .step-ico{font-size:25px;color:var(--gold);margin-bottom:20px}
+.step h3{font-size:1.22rem;font-weight:700;margin-bottom:7px}
+.step p{color:var(--muted);font-size:13.5px;line-height:1.78}
+.process-note{margin-top:24px;display:flex;align-items:flex-start;gap:9px;color:var(--faint);font-size:12.5px;line-height:1.7}
+.process-note i{color:var(--gold);font-size:15px;margin-top:2px}
+
+/* ---------- Marquee ---------- */
+.marquee{overflow:hidden;padding:clamp(26px,3.8vw,52px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg)}
+.marquee-track{display:flex;width:max-content;will-change:transform}
+.marquee-track span{font-size:clamp(3.4rem,8vw,8rem);line-height:1;font-weight:800;padding-inline-end:.32em;white-space:nowrap;color:transparent;-webkit-text-stroke:1.4px rgba(242,239,232,.38)}
+.marquee-track span em{font-style:normal;color:var(--gold);-webkit-text-stroke:0}
+
+/* ---------- FAQ ---------- */
+.faq{padding:clamp(100px,13vw,180px) 0}
+.faq-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(34px,5vw,80px);align-items:start}
+.faq-intro{position:sticky;top:calc(var(--nav-h) + 24px)}
+.faq-intro h2{font-size:clamp(2.3rem,4.4vw,4.4rem);line-height:1.14;max-width:12ch}
+.faq-intro p{color:var(--muted);margin:18px 0 24px;max-width:36ch;font-size:15px;line-height:1.85}
+.faq-list{border-top:1px solid var(--line-2)}
+.faq-item{border-bottom:1px solid var(--line-2)}
+.faq-item summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;cursor:pointer;font-weight:500;font-size:clamp(1rem,1.5vw,1.16rem);line-height:1.55;transition:color .3s var(--ease)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary:hover{color:var(--gold)}
+.faq-item .plus{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--muted);transition:transform .45s var(--ease),color .3s,box-shadow .3s;font-size:14px}
+.faq-item[open] .plus{transform:rotate(45deg);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(216,183,125,.4)}
+.faq-item .answer{padding:0 0 24px;color:var(--muted);font-size:14.5px;line-height:1.9;max-width:62ch}
+.faq-item .answer p+p{margin-top:10px}
+.faq-note{margin-top:22px;color:var(--faint);font-size:12.5px;display:flex;gap:8px;align-items:flex-start;line-height:1.7}
+.faq-note i{color:var(--gold);margin-top:2px}
+
+/* ---------- Contact ---------- */
+.contact{padding:clamp(90px,12vw,160px) 0 clamp(90px,10vw,140px);overflow:hidden}
+.contact::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 55% at 82% 30%,rgba(216,183,125,.1),transparent 70%)}
+.contact-grid{position:relative;display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:14px;align-items:stretch}
+.contact-card .core{padding:clamp(26px,3.2vw,44px);justify-content:center}
+.contact-info h3{font-size:clamp(1.7rem,2.6vw,2.4rem);line-height:1.3;font-weight:800;margin-bottom:12px}
+.contact-info>p{color:var(--muted);font-size:14.5px;line-height:1.85;max-width:38ch;margin-bottom:24px}
+.contact-info .btn{align-self:flex-start}
+.contact-list{list-style:none;display:grid;gap:16px;margin-top:30px;padding-top:24px;border-top:1px solid var(--line)}
+.contact-list li{display:flex;align-items:flex-start;gap:12px}
+.contact-list i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:rgba(216,183,125,.08);color:var(--gold);font-size:16px;box-shadow:inset 0 0 0 1px rgba(216,183,125,.16)}
+.contact-list span{display:block;font-size:11.5px;color:var(--faint);margin-bottom:1px}
+.contact-list a,.contact-list strong{font-size:14px;font-weight:500;color:var(--text);transition:color .3s}
+.contact-list a:hover{color:var(--gold)}
+.form-head h3{font-size:clamp(1.4rem,2.2vw,1.9rem);font-weight:700;margin-bottom:5px}
+.form-head p{color:var(--muted);font-size:13.5px;margin-bottom:22px}
+form{display:grid;gap:15px}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font-size:13px;font-weight:500;color:var(--text)}
+.field label small{color:var(--faint);font-weight:400;font-size:11px}
+.field input,.field select,.field textarea{
+  width:100%;border-radius:12px;border:0;background:var(--bg);color:var(--text);font:inherit;font-size:15px;
+  box-shadow:inset 0 0 0 1px var(--line-2);transition:box-shadow .3s var(--ease);appearance:none;-webkit-appearance:none;
+}
+.field input,.field select{height:52px;padding:0 16px}
+.field textarea{min-height:132px;padding:13px 16px;line-height:1.7;resize:vertical}
+.field select{padding-inline-end:16px;padding-inline-start:44px;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:left 22px center,left 17px center;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.field input::placeholder,.field textarea::placeholder{color:rgba(242,239,232,.34)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--gold)}
+.field .err{font-size:12px;color:#ff9a8a;min-height:0;line-height:1.5}
+.field.invalid input,.field.invalid select,.field.invalid textarea{box-shadow:inset 0 0 0 2px #ff9a8a}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:4px}
+.form-foot small{color:var(--faint);font-size:12px;max-width:34ch;line-height:1.7}
+.btn[disabled]{opacity:.8;cursor:progress}
+.form-status{margin-top:16px;padding:13px 15px;border-radius:12px;background:rgba(216,183,125,.09);box-shadow:inset 0 0 0 1px rgba(216,183,125,.24);font-size:13px;line-height:1.8;color:var(--muted)}
+.form-status a{color:var(--gold);font-weight:700}
+.form-status[hidden]{display:none}
+.nojs-note{margin-top:16px;padding:13px 15px;border-radius:12px;background:rgba(216,183,125,.09);box-shadow:inset 0 0 0 1px rgba(216,183,125,.24);font-size:13px;line-height:1.8;color:var(--muted)}
+.nojs-note a{color:var(--gold);font-weight:500;direction:ltr;unicode-bidi:embed;text-decoration:underline;text-underline-offset:3px}
+
+/* Floating WhatsApp */
+.wa-float{position:fixed;inset-inline-start:22px;bottom:22px;z-index:28;display:inline-flex;align-items:center;gap:9px;height:50px;padding:0 18px 0 15px;border-radius:999px;background:rgba(13,15,20,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 0 0 1px rgba(216,183,125,.34),0 16px 40px -18px #000;font-size:13px;font-weight:500;transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.wa-float i{font-size:20px;color:#58d68d}
+.wa-float:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1px rgba(216,183,125,.6),0 20px 44px -16px #000}
+
+/* ---------- Footer ---------- */
+footer{border-top:1px solid var(--line);padding-top:clamp(48px,6vw,80px);overflow:hidden}
+.foot-top{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:32px}
+.foot-brand p{color:var(--muted);max-width:34ch;font-size:14px;line-height:1.85;margin-top:14px}
+.foot-brand .foot-contact{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:18px;font-size:13px;color:var(--muted)}
+.foot-brand .foot-contact a:hover{color:var(--gold)}
+.foot-contact i{color:var(--gold);margin-inline-end:5px}
+.foot-col h4{font-size:12px;color:var(--faint);font-weight:500;margin-bottom:15px;letter-spacing:.08em}
+.foot-col ul{list-style:none;display:grid;gap:9px}
+.foot-col a{font-size:14px;color:var(--muted);transition:color .3s var(--ease)}
+.foot-col a:hover{color:var(--gold)}
+.wordmark{font-size:clamp(8rem,27vw,26rem);line-height:.78;font-weight:800;text-align:center;margin-top:clamp(36px,5vw,70px);display:flex;justify-content:center;user-select:none;overflow:hidden}
+.wordmark span{display:inline-block;padding-bottom:.06em;background:linear-gradient(to bottom,var(--text) 26%,rgba(242,239,232,.05));-webkit-background-clip:text;background-clip:text;color:transparent}
+.legal{display:flex;justify-content:space-between;align-items:center;gap:18px;padding-top:18px;padding-bottom:22px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);margin-top:-1px;position:relative;background:var(--bg)}
+.legal a{text-decoration:underline;text-underline-offset:3px}
+.legal a:hover{color:var(--gold)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1180px){
+  .nav-links{display:none}
+  .burger{display:block}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-copy{padding-bottom:0;max-width:820px}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .svc-feature{grid-column:span 2;grid-row:span 1}
+  .svc-store{grid-column:span 2}
+  .svc-land,.svc-ux{grid-column:span 1}
+  .foot-top{grid-template-columns:1.4fr 1fr 1fr}
+  .foot-brand{grid-column:span 3}
+}
+@media (max-width:900px){
+  body{font-size:16px}
+  .nav .nav-cta{display:none}
+  .hero{padding-top:calc(var(--nav-h) + 40px)}
+  .hero h1{font-size:clamp(3.1rem,10.6vw,5.4rem)}
+  .hero-sub{margin-top:20px}
+  .hero-meta{margin-top:32px}
+  .sec-head{grid-template-columns:1fr;gap:16px}
+  .sec-head p{max-width:48ch}
+  .manifesto p{max-width:24ch}
+  .explode{height:auto;min-height:100dvh;padding-top:calc(var(--nav-h) + 24px)}
+  .explode-intro{grid-template-columns:1fr;gap:10px}
+  .explode-intro p{display:none}
+  .explode-readout{justify-self:start;text-align:start;display:flex;align-items:baseline;gap:10px}
+  .explode-readout b{font-size:clamp(2.4rem,9vw,3.6rem)}
+  .explode-readout span{font-size:12px}
+  .parts{grid-template-columns:1fr;gap:0;margin-top:auto;padding-top:24px}
+  .part{display:none;padding-top:14px}
+  .part.on{display:block}
+  .part h3{font-size:17px}
+  .svc-grid{grid-template-columns:1fr}
+  .svc-feature,.svc-store,.svc-land,.svc-ux{grid-column:span 1}
+  .svc-feature .core,.svc-store .core{grid-template-columns:1fr}
+  .svc-visual{margin-top:6px}
+  .svc-land .core,.svc-ux .core{min-height:0}
+  .svc-ico{margin-bottom:0}
+  .svc h3{margin-top:16px}
+  .hz-track{height:auto;padding:100px var(--gutter);overflow-x:auto;width:100%;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;align-items:stretch}
+  .hz-intro{width:82vw;padding-top:0;align-self:center;scroll-snap-align:center}
+  .hz-card{scroll-snap-align:center;margin:0!important;align-self:center!important}
+  .hz-card .media{height:auto!important;width:82vw;aspect-ratio:4/5!important}
+  .hz-card.c1 .media{width:76vw;aspect-ratio:4/5!important}
+  .hz-card.c2 .media,.hz-card.c4 .media{width:86vw;aspect-ratio:4/3!important}
+  .hz-card.c3 .media{width:80vw;aspect-ratio:4/3!important}
+  .hz-end{width:72vw;padding-top:10px;scroll-snap-align:center}
+  .reveal-media{clip-path:inset(16% 8% 16% 8% round 24px)}
+  .scene-browser{width:92vw}
+  .scene-browser .mock-page{min-height:32em}
+  .scene-phone{inset-inline-start:3%;bottom:4%;width:108px}
+  .scene-tag{inset-inline-end:6%;top:13%;font-size:10px}
+  .scene-float{inset-inline-end:3%;bottom:6%;font-size:10px}
+  .stats{grid-template-columns:1fr 1fr;row-gap:22px}
+  .stat p{max-width:32ch}
+  .steps{grid-template-columns:1fr 1fr}
+  .step{min-height:210px}
+  .faq-grid{grid-template-columns:1fr}
+  .faq-intro{position:static}
+  .faq-intro h2{max-width:16ch}
+  .contact-grid{grid-template-columns:1fr}
+  .foot-top{grid-template-columns:1fr 1fr}
+  .foot-brand{grid-column:span 2}
+  .legal{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:640px){
+  :root{--gutter:18px;--nav-h:70px}
+  .hero-grid{gap:24px}
+  .hero h1{font-size:clamp(2.9rem,12.5vw,4.4rem)}
+  .hero-sub{font-size:.98rem;line-height:1.8}
+  .hero-ctas .btn{height:52px;font-size:14.5px}
+  .hero-meta{font-size:12.5px;gap:10px 16px}
+  .hero-meta-list{gap:8px 16px}
+  .scroll-cue{display:none}
+  .loader-meta{font-size:12px}
+  .manifesto p{font-size:clamp(1.55rem,7.2vw,2.2rem);max-width:22ch}
+  .explode h2{font-size:clamp(2rem,9vw,3rem)}
+  .explode-readout{margin-top:6px}
+  .parts{margin-top:auto}
+  .part p{max-width:36ch}
+  .sec-head h2{font-size:clamp(2rem,8.4vw,3rem)}
+  .sec-head p{font-size:14px}
+  .svc-feature .core,.svc-store .core{padding:20px}
+  .mock{font-size:8.5px}
+  .mock-page{padding:1.1em 1.2em 1.3em}
+  .reveal-title{font-size:clamp(2rem,9vw,3.2rem);max-width:12ch}
+  .reveal-media{clip-path:inset(14% 4% 14% 4% round 20px)}
+  .scene-browser{width:104vw;transform:rotate(0)}
+  .scene-browser .mock-page{min-height:28em}
+  .scene-phone{display:none}
+  .scene-float{display:none}
+  .stats{grid-template-columns:1fr 1fr;gap:14px}
+  .stat p{font-size:12px}
+  .steps{grid-template-columns:1fr}
+  .step{min-height:0;padding:22px}
+  .steps .step .no{margin-bottom:14px}
+  .faq-item summary{padding:18px 0;font-size:.98rem}
+  .contact-card .core{padding:22px}
+  .two{grid-template-columns:1fr}
+  .form-foot{flex-direction:column;align-items:flex-start}
+  .form-foot .btn{width:100%;justify-content:space-between}
+  .foot-top{grid-template-columns:1fr;gap:28px}
+  .foot-brand{grid-column:span 1}
+  .wa-float{inset-inline-start:16px;bottom:16px;width:50px;height:50px;padding:0;justify-content:center}
+  .wa-float span{display:none}
+  .wordmark{font-size:clamp(6rem,34vw,10rem)}
+}
+@media (max-width:900px) and (max-height:640px){
+  .hero{padding-top:calc(var(--nav-h) + 18px);padding-bottom:18px}
+  .hero-eyebrow{margin-bottom:14px}
+  .hero h1{font-size:clamp(2.5rem,11.5vw,3.4rem)}
+  .hero-sub{margin:16px 0 20px;font-size:.94rem;line-height:1.75}
+  .hero-ctas .btn{height:48px;font-size:14px}
+  .hero-meta{margin-top:20px;padding-top:12px;font-size:12px}
+}
+@media (min-width: 901px) and (prefers-reduced-motion: reduce){
+  .hz{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity}
+  .hz-card{scroll-snap-align:center}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .manifesto .w,.manifesto .gold.w{opacity:1}
+  .reveal-media{clip-path:none}
+  .reveal-media .scene{transform:none}
+  .part{opacity:1}
+  .part::after{transform:scaleX(1)}
+  .scroll-cue i{animation:none}
+  .status-dot{animation:none}
+}
+</style>
+<noscript>
+<style>
+  body.is-loading{overflow:auto}
+  .loader,#gl,.progress,.scroll-cue,.burger,#contactForm{display:none!important}
+  .manifesto .w,.manifesto .gold.w{opacity:1}
+  .explode{height:auto;min-height:100dvh}
+  .part{display:block!important;opacity:1}
+  .part::after{transform:scaleX(1)}
+  .reveal-media{clip-path:none}
+  .reveal-media .scene{transform:none}
+  .hz{overflow-x:auto}
+  .hz-track{overflow-x:auto}
+  @media (max-width:900px){.nav .nav-cta{display:inline-flex!important}}
+</style>
+</noscript>
+</head>
+<body class="is-loading" data-wa="21623025599" data-email="sadegtrabelsi39@gmail.com">
+
+<a class="skip-link" href="#top">تخطَّ إلى المحتوى</a>
+<div class="progress" aria-hidden="true"><i></i></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader-count tnum"><span id="lc">000</span><small>%</small></div>
+  <div class="loader-bar"><i></i></div>
+  <div class="loader-meta"><span>نواة — استوديو رقمي</span><span id="loader-status">نجهّز التجربة</span></div>
+</div>
+
+<header class="nav">
+  <a href="#top" class="brand" aria-label="نواة NAWAH — الرئيسية"><span class="brand-mark"></span><span>نواة<small>NAWAH</small></span></a>
+  <nav class="nav-links" aria-label="التنقل الرئيسي">
+    <a href="#services">خدماتنا</a>
+    <a href="#work">أعمالنا</a>
+    <a href="#why">لماذا نحن</a>
+    <a href="#process">مراحل العمل</a>
+    <a href="#faq">الأسئلة الشائعة</a>
+    <span class="nav-glide" aria-hidden="true"></span>
+  </nav>
+  <div class="nav-right">
+    <a href="#contact" class="btn btn-gold btn-sm nav-cta">اطلب موقعك<span class="ico"><i class="ph-bold ph-arrow-up-left"></i></span></a>
+    <button type="button" class="burger" aria-label="افتح القائمة" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="menu-links" aria-label="قائمة الجوال">
+    <a href="#top">الرئيسية</a>
+    <a href="#services">خدماتنا</a>
+    <a href="#work">أعمالنا</a>
+    <a href="#why">لماذا نحن</a>
+    <a href="#process">مراحل العمل</a>
+    <a href="#faq">الأسئلة الشائعة</a>
+    <a href="#contact" class="gold">لنبدأ مشروعك</a>
+  </nav>
+  <div class="menu-foot">
+    <a data-wa href="https://wa.me/21623025599" target="_blank" rel="noopener"><i class="ph-bold ph-whatsapp-logo"></i> واتساب</a>
+    <a data-email href="mailto:sadegtrabelsi39@gmail.com"><i class="ph-light ph-envelope-simple"></i> البريد</a>
+    <span><i class="ph-light ph-map-pin"></i> تونس · نعمل عن بُعد</span>
+  </div>
+</div>
+
+<main id="top" tabindex="-1">
+  <!-- HERO -->
+  <section class="hero" aria-label="مقدمة">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="hero-eyebrow">استوديو تصميم وتطوير المواقع · تونس</span>
+          <h1 class="display">
+            <span class="line"><span>حضورٌ رقمي</span></span>
+            <span class="line"><span>يليقُ <span class="gold">بطموحك.</span></span></span>
+          </h1>
+          <p class="hero-sub"><strong>نواة</strong> استوديو تونسي يصمّم ويطوّر مواقع للشركات والمتاجر. هوية بصرية متقنة، تجربة استخدام سلسة، وأداء يمنح علامتك الثقة من أول نظرة.</p>
+          <div class="hero-ctas">
+            <a href="#contact" class="btn btn-gold">اطلب موقعك الآن<span class="ico"><i class="ph-bold ph-arrow-up-left"></i></span></a>
+            <a href="#services" class="btn btn-ghost">استكشف خدماتنا<span class="ico"><i class="ph-light ph-arrow-down"></i></span></a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-list">
+          <span><i class="ph-light ph-map-pin"></i> تونس · نعمل عن بُعد</span>
+          <span><i class="ph-light ph-sparkle"></i> تصميم · تطوير · تجربة</span>
+          <span><i class="status-dot"></i> متاح لمشروع جديد</span>
+        </div>
+        <span class="scroll-cue">مرّر للأسفل <i class="ph-light ph-arrow-down"></i></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="solid manifesto" id="approach" aria-label="منهجنا">
+    <div class="wrap">
+      <div class="sec-kicker"><b>01</b> المنهج</div>
+      <p id="mtext">لا نبيع قوالب جاهزة. نبني حضورًا رقميًا يبدأ من فهم علامتك، ثم يترجمها إلى واجهة واضحة، وتجربة سلسة، وكود سريع — حتى يبدو كل شيء <span class="gold w">بسيطًا.</span></p>
+    </div>
+  </section>
+
+  <!-- 3D EXPLODED LAYERS -->
+  <section class="explode" id="layers" aria-label="طبقات بناء الموقع">
+    <div class="wrap explode-intro">
+      <div>
+        <span class="eyebrow"><i class="ph-bold ph-stack"></i> تشريح موقع ناجح</span>
+        <h2 class="display">أربع طبقات.<br>تجربة واحدة.</h2>
+        <p>مرّر لتفكيك النواة: من الهوية البصرية إلى الكود والأداء. كل طبقة تعمل مع الأخرى لتبني موقعًا متكاملًا، لا مجرد صفحة جميلة.</p>
+      </div>
+      <div class="explode-readout">
+        <b class="tnum" id="layerNo">01</b>
+        <span>من أربع طبقات</span>
+      </div>
+    </div>
+    <div></div>
+    <div class="wrap parts">
+      <div class="part on" data-i="0"><h3><i class="ph-light ph-palette"></i>الهوية والواجهة</h3><p>نظام بصري واضح: ألوان وخطوط ومساحات تعكس شخصية علامتك.</p></div>
+      <div class="part" data-i="1"><h3><i class="ph-light ph-cursor-click"></i>تجربة المستخدم</h3><p>بنية معلومات ومسارات مصممة لتقود الزائر إلى الخطوة التالية.</p></div>
+      <div class="part" data-i="2"><h3><i class="ph-light ph-code"></i>البرمجة والأداء</h3><p>كود نظيف وتحميل سريع وتوافق كامل مع مختلف الأجهزة.</p></div>
+      <div class="part" data-i="3"><h3><i class="ph-light ph-shield-check"></i>التحسين والحماية</h3><p>SEO أساسي وحماية ونسخ احتياطي لموقع مطمئن على المدى الطويل.</p></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="solid services" id="services" aria-label="خدماتنا">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow"><i class="ph-bold ph-squares-four"></i> خدماتنا</span>
+          <h2 class="display">كل ما يحتاجه موقعك، تحت سقف واحد.</h2>
+        </div>
+        <p>من أول رسم تخطيطي إلى الإطلاق والمتابعة. نغطي الرحلة كاملة بمعايير واضحة ومواعيد نلتزم بها.</p>
+      </div>
+
+      <div class="svc-grid">
+        <article class="svc svc-feature shell">
+          <div class="core">
+            <div class="svc-copy">
+              <i class="ph-light ph-buildings svc-ico"></i>
+              <h3>مواقع الشركات</h3>
+              <p>موقع يعرّف بخدماتك، يعزز مصداقيتك، ويجعل التواصل معك أسهل. مبني ليشرح ما تفعله بوضوح ويترك انطباعًا احترافيًا.</p>
+              <div class="svc-tags"><span>بنية واضحة</span><span>صفحات خدمات</span><span>نموذج تواصل</span><span>SEO أساسي</span></div>
+              <a class="svc-link" href="#contact">اطلب موقع شركة <i class="ph-bold ph-arrow-up-left"></i></a>
+            </div>
+            <div class="svc-visual" aria-hidden="true">
+              <div class="mock mock--site">
+                <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url">mirqat.tn</span></div>
+                <div class="mock-page">
+                  <div class="mock-nav"><span class="m-brand">مِرْقاة<small>MARQAT</small></span><span class="m-links"><i></i><i></i><i></i><span class="m-pill"></span></span></div>
+                  <div class="m-hero">
+                    <div>
+                      <span class="m-kicker">استشارات أعمال</span>
+                      <div class="m-title">نُحوّل <em>الطموح</em> إلى خطة.</div>
+                      <div class="m-lines"><i></i><i></i><i></i></div>
+                      <span class="m-btn">احجز استشارة</span>
+                    </div>
+                    <div class="m-art" style="--art-a:#e7ca94;--art-b:#7b6034;--art-c:#17130c"><span class="glyph">م</span></div>
+                  </div>
+                  <div class="m-logos"><i></i><i></i><i></i><i></i><i></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="svc svc-store shell">
+          <div class="core">
+            <div class="svc-copy">
+              <i class="ph-light ph-shopping-bag svc-ico"></i>
+              <h3>المتاجر الإلكترونية</h3>
+              <p>متجر سريع وسهل الإدارة، من عرض المنتج إلى إتمام الطلب. تجربة شراء بسيطة تزيد الثقة وتقلل التخلي عن السلة.</p>
+              <div class="svc-tags"><span>كتالوج</span><span>سلة ودفع</span><span>إدارة الطلبات</span></div>
+              <a class="svc-link" href="#contact">اطلب متجرك <i class="ph-bold ph-arrow-up-left"></i></a>
+            </div>
+            <div class="svc-visual" aria-hidden="true">
+              <div class="mock mock--light">
+                <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url">zaytoun.tn</span></div>
+                <div class="mock-page">
+                  <div class="mock-nav"><span class="m-brand">زيتون<small>ZAYTOUN</small></span><span class="m-links"><i></i><span class="m-pill"></span></span></div>
+                  <div class="m-shop-head">
+                    <div><span class="m-kicker">مجموعة الصيف</span><div class="m-title" style="font-size:1.55em">قطع تُحبّها.</div></div>
+                    <span class="m-lines" style="max-width:5em"><i></i><i></i></span>
+                  </div>
+                  <div class="m-products">
+                    <div class="m-product" style="--p-a:#b9a67d;--p-b:#746448"><div class="ph"></div><i></i><i></i></div>
+                    <div class="m-product" style="--p-a:#8d9a7c;--p-b:#4e5847"><div class="ph"></div><i></i><i></i></div>
+                    <div class="m-product" style="--p-a:#c2a98c;--p-b:#7c644f"><div class="ph"></div><i></i><i></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="svc svc-land shell">
+          <div class="core">
+            <i class="ph-light ph-rocket-launch svc-ico"></i>
+            <h3>صفحات الهبوط</h3>
+            <p>صفحة واحدة برسالة واضحة وهدف محدد، مصممة لتحويل الزيارات إلى عملاء.</p>
+            <div class="svc-tags"><span>رسالة واحدة</span><span>CTA واضح</span><span>سرعة</span></div>
+          </div>
+        </article>
+
+        <article class="svc svc-ux shell">
+          <div class="core">
+            <i class="ph-light ph-compass svc-ico"></i>
+            <h3>تحسين تجربة المستخدم</h3>
+            <p>نراجع واجهتك الحالية ونعيد ترتيبها لتقليل الاحتكاك وزيادة الرضا.</p>
+            <div class="svc-tags"><span>تدقيق UX</span><span>Wireframes</span><span>إتاحة</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="hz" id="work" aria-label="أعمالنا">
+    <div class="hz-track">
+      <div class="hz-intro">
+        <span class="eyebrow"><i class="ph-bold ph-layout"></i> أعمالنا</span>
+        <h2 class="display">نماذج توضيحية بأسلوبنا.</h2>
+        <p>هذه مشاريع تجريبية صُممت لعرض اتجاهنا البصري وتجربة الاستخدام. ليست أعمالًا لعملاء حقيقيين، ويمكن أن يصبح مشروعك القادم أحدها.</p>
+        <span class="hz-note"><i class="ph-light ph-info"></i> بيانات وعناوين تجريبية بالكامل</span>
+      </div>
+
+      <figure class="hz-card c1">
+        <div class="media">
+          <span class="demo-badge">نموذج تجريبي 01</span>
+          <div class="mock mock--furniture" aria-hidden="true">
+            <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url">dar-yasmine.tn</span></div>
+            <div class="mock-page">
+              <div class="mock-nav"><span class="m-brand">دار الياسمين<small>MAISON JASMIN</small></span><span class="m-links"><i></i><i></i><i></i></span></div>
+              <div class="m-hero">
+                <div><span class="m-kicker">مجموعة 2026</span><div class="m-title">أثاثٌ <em>يصنع</em> البيت.</div><div class="m-lines"><i></i><i></i></div><span class="m-btn">تسوّق المجموعة</span></div>
+                <div class="m-art" style="--art-a:#e8dcc4;--art-b:#9ba883;--art-c:#2c3325"><span class="glyph">ي</span></div>
+              </div>
+              <div class="m-tiles">
+                <div class="m-tile" style="--tile-a:#c7b590;--tile-b:#8b7a5a"><div class="thumb"></div><i></i><i></i></div>
+                <div class="m-tile" style="--tile-a:#a6b295;--tile-b:#6b775e"><div class="thumb"></div><i></i><i></i></div>
+                <div class="m-tile" style="--tile-a:#d6c3a1;--tile-b:#a08a64"><div class="thumb"></div><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption><div><strong>دار الياسمين</strong><span>متجر أثاث · تصميم وتجربة شراء</span></div><span class="fig-no">01</span></figcaption>
+      </figure>
+
+      <figure class="hz-card c2">
+        <div class="media">
+          <span class="demo-badge">نموذج تجريبي 02</span>
+          <div class="mock mock--green" aria-hidden="true">
+            <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url">al-boustan.tn</span></div>
+            <div class="mock-page">
+              <div class="mock-nav"><span class="m-brand">البُستان<small>AL BOUSTAN</small></span><span class="m-links"><i></i><i></i><span class="m-pill"></span></span></div>
+              <div class="m-hero">
+                <div><span class="m-kicker">مطبخ موسمي</span><div class="m-title">نكهات من <em>الموسم.</em></div><div class="m-lines"><i></i><i></i></div><span class="m-btn">احجز طاولة</span></div>
+                <div class="m-art" style="--art-a:#d9bd82;--art-b:#5c6b45;--art-c:#101a13"><span class="glyph">ب</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption><div><strong>البُستان</strong><span>موقع مطعم · هوية رقمية</span></div><span class="fig-no">02</span></figcaption>
+      </figure>
+
+      <figure class="hz-card c3">
+        <div class="media">
+          <span class="demo-badge">نموذج تجريبي 03</span>
+          <div class="mock mock--arch" aria-hidden="true">
+            <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url">arkit.tn</span></div>
+            <div class="mock-page">
+              <div class="mock-nav"><span class="m-brand">أركيت<small>ARKIT STUDIO</small></span><span class="m-links"><i></i><i></i><i></i></span></div>
+              <div class="m-hero">
+                <div><span class="m-kicker">عمارة داخلية</span><div class="m-title">مساحات <em>تُلهِم.</em></div><div class="m-lines"><i></i><i></i></div><span class="m-btn">شاهد المشاريع</span></div>
+                <div class="m-art square" style="--art-a:#dedbd2;--art-b:#8f8b80;--art-c:#1b1b19"><span class="glyph">أ</span></div>
+              </div>
+              <div class="m-logos"><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+        <figcaption><div><strong>أركيت</strong><span>استوديو معماري · موقع أعمال</span></div><span class="fig-no">03</span></figcaption>
+      </figure>
+
+      <figure class="hz-card c4">
+        <div class="media">
+          <span class="demo-badge">نموذج تجريبي 04</span>
+          <div class="mock mock--pulse" aria-hidden="true">
+            <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url">nabd.fit</span></div>
+            <div class="mock-page">
+              <div class="mock-nav"><span class="m-brand">نبض<small>NABD</small></span><span class="m-links"><i></i><span class="m-pill"></span></span></div>
+              <div class="m-hero">
+                <div><span class="m-kicker">تدريب يومي</span><div class="m-title">حرّك <em>يومك.</em></div><div class="m-lines"><i></i><i></i></div><span class="m-btn">ابدأ الآن</span></div>
+                <div class="m-art" style="--art-a:#ffb18f;--art-b:#8d4e57;--art-c:#1a1220"><span class="glyph">ن</span></div>
+              </div>
+              <div class="m-tiles">
+                <div class="m-tile" style="--tile-a:#5a3b4c;--tile-b:#231a2c"><div class="thumb"></div><i></i><i></i></div>
+                <div class="m-tile" style="--tile-a:#7d453d;--tile-b:#2a1c22"><div class="thumb"></div><i></i><i></i></div>
+                <div class="m-tile" style="--tile-a:#3f5960;--tile-b:#1a252c"><div class="thumb"></div><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption><div><strong>نبض</strong><span>صفحة هبوط للياقة · حملة رقمية</span></div><span class="fig-no">04</span></figcaption>
+      </figure>
+
+      <div class="hz-end">
+        <b>05</b>
+        <h3>مشروعك القادم؟</h3>
+        <p>أخبرنا بفكرتك، وسنساعدك على تحويلها إلى موقع واضح وسريع ومصمم بعناية.</p>
+        <a href="#contact" class="btn btn-gold">لنبدأ الحديث<span class="ico"><i class="ph-bold ph-arrow-up-left"></i></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY / REVEAL -->
+  <section class="reveal" id="why" aria-label="لماذا نواة">
+    <div class="reveal-media" aria-hidden="true">
+      <div class="scene">
+        <span class="scene-tag">عرض توضيحي للواجهة</span>
+        <div class="mock mock--site scene-browser">
+          <div class="mock-bar"><span class="mock-dots"><i></i><i></i><i></i></span><span class="mock-url">nawah.studio / project</span></div>
+          <div class="dash-body">
+            <aside class="dash-side">
+              <span class="m-brand">نواة<small>NAWAH</small></span>
+              <i class="on"></i><i></i><i></i><i></i><i></i>
+            </aside>
+            <div class="dash-main">
+              <div class="dash-top">
+                <div><span class="m-kicker">لوحة المشروع</span><div class="m-title" style="font-size:1.7em;margin-bottom:0">نظرة واحدة.</div></div>
+                <span class="m-pill" style="width:5.4em;height:1.6em;border-radius:99px;background:var(--m-accent);opacity:1"></span>
+              </div>
+              <div class="dash-cards">
+                <div class="dash-card"><b>Aa</b><span>الخطوط</span><em>نظام بصري</em></div>
+                <div class="dash-card"><b>UI</b><span>الواجهة</span><em>مكوّنات متسقة</em></div>
+                <div class="dash-card"><b>UX</b><span>التجربة</span><em>مسارات واضحة</em></div>
+              </div>
+              <div class="dash-chart">
+                <div class="dash-grid"></div>
+                <svg viewBox="0 0 600 190" preserveAspectRatio="none" role="presentation">
+                  <defs>
+                    <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#d8b77d" stop-opacity=".34"/>
+                      <stop offset="1" stop-color="#d8b77d" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0 170 C60 150 85 120 135 128 S210 82 260 96 S335 50 390 66 S470 26 520 38 S575 18 600 12 L600 190 L0 190 Z" fill="url(#chartFill)"/>
+                  <path d="M0 170 C60 150 85 120 135 128 S210 82 260 96 S335 50 390 66 S470 26 520 38 S575 18 600 12" fill="none" stroke="#d8b77d" stroke-width="2.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock mock--light scene-phone">
+          <div class="mock-page">
+            <div class="mock-nav"><span class="m-brand" style="font-size:1.4em">نواة</span><span class="m-links"><i></i></span></div>
+            <div class="m-title">تصميم <em>يُستخدم.</em></div>
+            <div class="m-art" style="--art-a:#e8dcc4;--art-b:#b09a71;--art-c:#312a1f"><span class="glyph">ن</span></div>
+            <span class="m-btn" style="font-size:.62em">اكتشف</span>
+          </div>
+        </div>
+        <span class="scene-float"><i class="ph-light ph-check-circle"></i> تفاصيل مُتقنة</span>
+      </div>
+    </div>
+    <div class="reveal-inner">
+      <div class="wrap">
+        <span class="eyebrow"><i class="ph-bold ph-diamond"></i> لماذا نواة؟</span>
+        <h2 class="display reveal-title">
+          <span class="line"><span>نبني ما يبدو</span></span>
+          <span class="line"><span class="gold">بسيطًا.</span></span>
+        </h2>
+      </div>
+      <div class="wrap stats">
+        <div class="stat"><b>01</b><h3>السرعة</h3><p>نبني بمعايير أداء واضحة، ونختبر التحميل والتفاعل قبل التسليم.</p></div>
+        <div class="stat"><b>02</b><h3>التصميم الاحترافي</h3><p>هوية متسقة وتفاصيل مدروسة، لا قوالب جاهزة ولا حلول مؤقتة.</p></div>
+        <div class="stat"><b>03</b><h3>التوافق مع الهواتف</h3><p>تجربة سليمة على كل المقاسات، من الهاتف إلى الشاشة الكبيرة.</p></div>
+        <div class="stat"><b>04</b><h3>سهولة الاستخدام</h3><p>واجهات مباشرة ونصوص واضحة وخطوات أقل للوصول إلى الهدف.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="solid process" id="process" aria-label="مراحل العمل">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow"><i class="ph-bold ph-path"></i> مراحل العمل</span>
+          <h2 class="display">طريق واضح من الفكرة إلى الإطلاق.</h2>
+        </div>
+        <p>خمس مراحل، كل واحدة لها مخرج واضح ومراجعة معك. تعرف دائمًا أين نحن، وما الخطوة التالية.</p>
+      </div>
+      <ol class="steps">
+        <li class="step"><span class="no">01</span><i class="ph-light ph-magnifying-glass step-ico"></i><h3>نفهم</h3><p>جلسة اكتشاف: أهدافك، جمهورك، ومنافسوك. نحدد ما يحتاجه الموقع ليعمل فعلًا.</p></li>
+        <li class="step"><span class="no">02</span><i class="ph-light ph-pen-nib step-ico"></i><h3>نرسم</h3><p>بنية المحتوى، والاتجاه البصري، والرسومات الأولية. نتفق على الصورة قبل كتابة الكود.</p></li>
+        <li class="step"><span class="no">03</span><i class="ph-light ph-code step-ico"></i><h3>نطوّر</h3><p>تصميم الواجهات وبناء الموقع بأداء عالٍ وتوافق كامل مع مختلف الأجهزة.</p></li>
+        <li class="step"><span class="no">04</span><i class="ph-light ph-test-tube step-ico"></i><h3>نختبر</h3><p>الروابط والنماذج والسرعة والتجربة على متصفحات وأحجام شاشات مختلفة.</p></li>
+        <li class="step"><span class="no">05</span><i class="ph-light ph-paper-plane-tilt step-ico"></i><h3>نسلّم</h3><p>إطلاق، تدريب على الإدارة، ومتابعة بعد النشر. التسليم ليس نهاية الطريق.</p></li>
+      </ol>
+      <p class="process-note"><i class="ph-light ph-clock"></i> المدة النموذجية: 2–4 أسابيع لموقع تعريفي، و4–8 أسابيع لمتجر إلكتروني، بعد استلام المحتوى.</p>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="solid marquee" aria-hidden="true">
+    <div class="marquee-track" id="mq">
+      <span>تصميم <em>·</em> تطوير <em>·</em> تجربة <em>·</em> أداء <em>·</em></span>
+      <span>تصميم <em>·</em> تطوير <em>·</em> تجربة <em>·</em> أداء <em>·</em></span>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="solid faq" id="faq" aria-label="الأسئلة الشائعة">
+    <div class="wrap faq-grid">
+      <div class="faq-intro">
+        <span class="eyebrow"><i class="ph-bold ph-question"></i> الأسئلة الشائعة</span>
+        <h2 class="display">أسئلة تُطرح قبل البداية.</h2>
+        <p>جمعنا أكثر ما يسأل عنه العملاء. إن لم تجد سؤالك، راسلنا مباشرة وسنجيبك بوضوح.</p>
+        <a class="btn btn-ghost" data-wa data-wa-msg="مرحبًا نواة، لدي سؤال عن تصميم موقع." href="https://wa.me/21623025599">اسألنا على واتساب<span class="ico"><i class="ph-bold ph-whatsapp-logo"></i></span></a>
+        <p class="faq-note"><i class="ph-light ph-info"></i> الأسعار المذكورة تقديرية بالدينار التونسي، ويُحدَّد السعر النهائي بعد جلسة الاكتشاف.</p>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>كم تبدأ تكلفة الموقع؟<span class="plus"><i class="ph-bold ph-plus"></i></span></summary>
+          <div class="answer"><p>المواقع التعريفية تبدأ من 1,500 د.ت، والمتاجر الإلكترونية من 3,500 د.ت. الأرقام تقديرية؛ السعر النهائي يعتمد على عدد الصفحات والميزات والمحتوى. نرسل عرضًا واضحًا ومفصّلًا بعد جلسة الاكتشاف.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>كم يستغرق تنفيذ الموقع؟<span class="plus"><i class="ph-bold ph-plus"></i></span></summary>
+          <div class="answer"><p>موقع تعريفي عادة من 2 إلى 4 أسابيع، ومتجر إلكتروني من 4 إلى 8 أسابيع، بعد استلام المحتوى. نضع جدولًا زمنيًا في بداية المشروع ونحدّثك في كل مرحلة.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>هل الموقع سيعمل على الهاتف؟<span class="plus"><i class="ph-bold ph-plus"></i></span></summary>
+          <div class="answer"><p>نعم. نصمم للهاتف أولًا ثم نوسّع للشاشات الأكبر، ونختبر الموقع على أحجام ومتصفحات مختلفة قبل الإطلاق.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>هل تقدمون الصيانة بعد الإطلاق؟<span class="plus"><i class="ph-bold ph-plus"></i></span></summary>
+          <div class="answer"><p>نعم، نساعدك في التحديثات والنسخ الاحتياطي والمراقبة. يمكن الاتفاق على باقة صيانة شهرية حسب حجم الموقع واحتياجك.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>هل أحتاج إلى تجهيز المحتوى؟<span class="plus"><i class="ph-bold ph-plus"></i></span></summary>
+          <div class="answer"><p>نستطيع مساعدتك في صياغة النصوص وترتيب المحتوى. الصور والبيانات الخاصة بشركتك تبقى من مسؤوليتك، ونساعدك في اختيارها وتجهيزها بالشكل المناسب.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>من يملك الموقع والحسابات بعد التسليم؟<span class="plus"><i class="ph-bold ph-plus"></i></span></summary>
+          <div class="answer"><p>أنت. نسلّمك ملفات الموقع وصلاحيات النطاق والاستضافة والحسابات المرتبطة به، مع شرح واضح لكيفية إدارته.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>هل تعملون مع عملاء خارج تونس؟<span class="plus"><i class="ph-bold ph-plus"></i></span></summary>
+          <div class="answer"><p>نعم، نعمل عن بُعد مع عملاء في تونس وخارجها. التواصل عبر واتساب أو البريد، والاجتماعات عبر مكالمة فيديو حسب ما يناسبك.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="solid contact" id="contact" aria-label="التواصل">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow"><i class="ph-bold ph-chat-circle-dots"></i> لنبدأ</span>
+          <h2 class="display">أخبرنا عن مشروعك.</h2>
+        </div>
+        <p>املأ النموذج وسنفتح واتساب برسالتك جاهزة. أو تواصل معنا مباشرة — نرد عادة خلال يوم عمل.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="shell contact-card">
+          <div class="core contact-info">
+            <h3>لنبدأ الحديث.</h3>
+            <p>أخبرنا بما تحتاجه، حتى لو كانت الفكرة غير مكتملة. نساعدك على توضيحها وتحويلها إلى خطة واضحة.</p>
+            <a class="btn btn-gold" data-wa data-wa-msg="مرحبًا نواة، أود مناقشة مشروع موقع إلكتروني." href="https://wa.me/21623025599">تحدّث معنا على واتساب<span class="ico"><i class="ph-bold ph-whatsapp-logo"></i></span></a>
+            <ul class="contact-list">
+              <li><i class="ph-bold ph-whatsapp-logo"></i><div><span>واتساب</span><a data-wa data-wa-display href="https://wa.me/21623025599">‎+216 23 025 599</a></div></li>
+              <li><i class="ph-light ph-envelope-simple"></i><div><span>البريد الإلكتروني</span><a data-email data-email-text href="mailto:sadegtrabelsi39@gmail.com">sadegtrabelsi39@gmail.com</a></div></li>
+              <li><i class="ph-light ph-map-pin"></i><div><span>الموقع</span><strong>تونس · نعمل عن بُعد</strong></div></li>
+              <li><i class="ph-light ph-clock"></i><div><span>وقت الرد</span><strong>عادة خلال يوم عمل</strong></div></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="shell contact-card">
+          <div class="core">
+            <div class="form-head">
+              <h3>تفاصيل المشروع</h3>
+              <p>الحقول المعلّمة بـ * مطلوبة. لا تُرسل البيانات إلى أي خادم من هذا الموقع.</p>
+            </div>
+            <form id="contactForm" novalidate>
+              <div class="two">
+                <div class="field">
+                  <label for="c-name">الاسم الكامل *</label>
+                  <input id="c-name" name="name" autocomplete="name" placeholder="مثال: سارة بن علي" required aria-required="true" aria-invalid="false" aria-describedby="e-name">
+                  <span class="err" id="e-name"></span>
+                </div>
+                <div class="field">
+                  <label for="c-email">البريد الإلكتروني *</label>
+                  <input id="c-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required aria-required="true" aria-invalid="false" aria-describedby="e-email">
+                  <span class="err" id="e-email"></span>
+                </div>
+              </div>
+              <div class="two">
+                <div class="field">
+                  <label for="c-type">نوع المشروع *</label>
+                  <select id="c-type" name="type" required aria-required="true" aria-invalid="false" aria-describedby="e-type">
+                    <option value="">اختر نوع المشروع</option>
+                    <option>موقع شركة</option>
+                    <option>متجر إلكتروني</option>
+                    <option>صفحة هبوط</option>
+                    <option>تحسين تجربة مستخدم</option>
+                    <option>أخرى</option>
+                  </select>
+                  <span class="err" id="e-type"></span>
+                </div>
+                <div class="field">
+                  <label for="c-phone">الهاتف <small>(اختياري)</small></label>
+                  <input id="c-phone" name="phone" type="tel" autocomplete="tel" placeholder="+216 ...">
+                  <span class="err"></span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="c-msg">تفاصيل المشروع *</label>
+                <textarea id="c-msg" name="message" placeholder="أخبرنا عن نشاطك، أهدافك، والموعد الذي تحتاجه..." required aria-required="true" aria-invalid="false" aria-describedby="e-msg"></textarea>
+                <span class="err" id="e-msg"></span>
+              </div>
+              <div class="form-foot">
+                <small>سيفتح واتساب مع رسالتك جاهزة للمراجعة والإرسال. لن يتم إرسال أي شيء تلقائيًا.</small>
+                <button type="submit" class="btn btn-gold" id="submitBtn">إرسال عبر واتساب<span class="ico"><i class="ph-bold ph-whatsapp-logo"></i></span></button>
+              </div>
+              <div class="form-status" id="formStatus" role="status" aria-live="polite" hidden></div>
+            </form>
+            <noscript>
+              <p class="nojs-note">JavaScript غير مفعّل، لذلك لا يمكن تجهيز النموذج. تواصل معنا مباشرة عبر البريد <a href="mailto:sadegtrabelsi39@gmail.com">sadegtrabelsi39@gmail.com</a> أو واتساب <a href="https://wa.me/21623025599" target="_blank" rel="noopener">+216 23 025 599</a>.</p>
+            </noscript>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+  <footer class="solid">
+    <div class="wrap foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="brand"><span class="brand-mark"></span><span>نواة<small>NAWAH</small></span></a>
+        <p>استوديو تونسي لتصميم وتطوير المواقع. نبني حضورًا رقميًا واضحًا للشركات والمتاجر، من الفكرة إلى الإطلاق.</p>
+        <div class="foot-contact">
+          <a data-wa href="https://wa.me/21623025599"><i class="ph-bold ph-whatsapp-logo"></i><span data-wa-display>‎+216 23 025 599</span></a>
+          <a data-email href="mailto:sadegtrabelsi39@gmail.com"><i class="ph-light ph-envelope-simple"></i><span data-email-text>sadegtrabelsi39@gmail.com</span></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>الاستوديو</h4>
+        <ul>
+          <li><a href="#services">خدماتنا</a></li>
+          <li><a href="#work">أعمالنا</a></li>
+          <li><a href="#why">لماذا نحن</a></li>
+          <li><a href="#process">مراحل العمل</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>المزيد</h4>
+        <ul>
+          <li><a href="#faq">الأسئلة الشائعة</a></li>
+          <li><a href="#contact">التواصل</a></li>
+          <li><a href="#top">الرئيسية</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>تواصل</h4>
+        <ul>
+          <li><a data-wa href="https://wa.me/21623025599">واتساب</a></li>
+          <li><a data-email href="mailto:sadegtrabelsi39@gmail.com">البريد الإلكتروني</a></li>
+          <li><span class="muted" style="font-size:14px">تونس · عن بُعد</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wordmark" aria-hidden="true"><span>نواة</span></div>
+    <div class="wrap legal">
+      <span>© <span id="year">2026</span> نواة. جميع الحقوق محفوظة.</span>
+      <span>قالب أولي مبني على <a href="LICENSE">VOLT Arc</a> برخصة MIT — أُعيد تصميمه بالكامل.</span>
+    </div>
+  </footer>
+
+<a class="wa-float" data-wa data-wa-msg="مرحبًا نواة، أود الاستفسار عن تصميم موقع." href="https://wa.me/21623025599" target="_blank" rel="noopener" aria-label="راسلنا على واتساب">
+  <i class="ph-bold ph-whatsapp-logo"></i><span>واتساب</span>
+</a>
+
+<script>
+/* Failsafe: never leave the loader stuck if a CDN or module fails */
+setTimeout(function(){
+  var l=document.querySelector('.loader');
+  if(l){l.remove();document.body.classList.remove('is-loading');}
+  if(window.__nawahLenis){try{window.__nawahLenis.start();}catch(e){}}
+},6000);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}
+</script>
+<script type="module">
+/* Three.js is imported dynamically below so a blocked CDN or a device
+   without WebGL never prevents the rest of the site from working. */
+
+/* =========================================================
+   Site settings — change the WhatsApp number and email here only
+   (body data attributes at the top of the document)
+   ========================================================= */
+const body = document.body;
+const WA = (body.dataset.wa || '').replace(/\D/g, '');
+const EMAIL = body.dataset.email || '';
+const waLink = (msg) => `https://wa.me/${WA}${msg ? '?text=' + encodeURIComponent(msg) : ''}`;
+const formatPhone = (n) => {
+  const local = n.replace(/^216/, '');
+  return '+216 ' + local.slice(0, 2) + ' ' + local.slice(2, 5) + ' ' + local.slice(5);
+};
+document.querySelectorAll('a[data-wa]').forEach((a) => {
+  a.href = waLink(a.dataset.waMsg || '');
+  a.target = '_blank';
+  a.rel = 'noopener';
+});
+document.querySelectorAll('[data-wa-display]').forEach((el) => { el.textContent = formatPhone(WA); });
+document.querySelectorAll('a[data-email]').forEach((a) => { a.href = 'mailto:' + EMAIL; });
+document.querySelectorAll('[data-email-text]').forEach((el) => { el.textContent = EMAIL; });
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = () => innerWidth < 900;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const smooth = (t) => t * t * (3 - 2 * t);
+const isTyping = (el) => ['INPUT', 'SELECT', 'TEXTAREA'].includes((el.tagName || '').toUpperCase());
+
+/* ---------- GSAP + Lenis ---------- */
+gsap.registerPlugin(ScrollTrigger);
+let lenis = null;
+if (!reduce) {
+  lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((t) => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+  lenis.stop();
+}
+window.__nawahLenis = lenis;
+
+/* ---------- Mobile menu ---------- */
+const burger = document.querySelector('.burger');
+const menu = document.getElementById('menu');
+function setMenu(open) {
+  body.classList.toggle('menu-open', open);
+  burger.setAttribute('aria-expanded', String(open));
+  burger.setAttribute('aria-label', open ? 'أغلق القائمة' : 'افتح القائمة');
+  menu.setAttribute('aria-hidden', String(!open));
+  if (lenis) open ? lenis.stop() : lenis.start();
+}
+burger.addEventListener('click', () => setMenu(!body.classList.contains('menu-open')));
+menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && body.classList.contains('menu-open')) setMenu(false);
+});
+
+/* ---------- Smooth anchor navigation ---------- */
+document.querySelectorAll('a[href^="#"]').forEach((a) => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (!id || id.length < 2) return;
+    const el = document.querySelector(id);
+    if (!el) return;
+    e.preventDefault();
+    if (body.classList.contains('menu-open')) setMenu(false);
+    const offset = -(document.querySelector('.nav').offsetHeight + 8);
+    if (lenis) lenis.scrollTo(el, { duration: 1.4, offset });
+    else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  });
+});
+
+/* ---------- Nav hover glide ---------- */
+{
+  const nl = document.querySelector('.nav-links');
+  const glide = nl.querySelector('.nav-glide');
+  const qx = gsap.quickTo(glide, 'x', { duration: 0.5, ease: 'expo.out' });
+  const qw = gsap.quickTo(glide, 'width', { duration: 0.5, ease: 'expo.out' });
+  const move = (a, instant) => {
+    if (instant) {
+      gsap.set(glide, { x: a.offsetLeft, width: a.offsetWidth });
+      qx(a.offsetLeft, a.offsetLeft);
+      qw(a.offsetWidth, a.offsetWidth);
+    } else {
+      qx(a.offsetLeft);
+      qw(a.offsetWidth);
+    }
+    nl.classList.add('has-glide');
+  };
+  nl.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('pointerenter', () => move(a, !nl.classList.contains('has-glide')));
+    a.addEventListener('focus', () => move(a, !nl.classList.contains('has-glide')));
+  });
+  nl.addEventListener('pointerleave', () => nl.classList.remove('has-glide'));
+  nl.addEventListener('focusout', (e) => {
+    if (!nl.contains(e.relatedTarget)) nl.classList.remove('has-glide');
+  });
+}
+
+/* =========================================================
+   Three.js: a procedural "digital core"
+   The same scroll-scrubbed assembly idea as the original
+   template: each part has a start/end Z offset, plus an
+   optional outward X/Y offset, driven by S.explode.
+   ========================================================= */
+function roundedShape(w, h, r) {
+  const s = new THREE.Shape();
+  const x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+  return s;
+}
+
+function createCore(scene) {
+  const group = new THREE.Group();
+  scene.add(group);
+  const parts = [];
+  const addPart = (obj, z0, z1, delay, spins = false, out = null) => {
+    obj.position.z = z0;
+    group.add(obj);
+    parts.push({ obj, z0, z1, delay, spins, out, base: obj.position.clone(), rotZ: obj.rotation.z });
+    return obj;
+  };
+
+  const M = {
+    gold: new THREE.MeshStandardMaterial({ color: 0xd8b77d, metalness: 1, roughness: 0.24, envMapIntensity: 1.3 }),
+    goldDim: new THREE.MeshStandardMaterial({ color: 0x8a7044, metalness: 0.9, roughness: 0.36 }),
+    inner: new THREE.MeshPhysicalMaterial({
+      color: 0x211a10, metalness: 0.88, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.16,
+      emissive: 0x6b4e1f, emissiveIntensity: 0.42
+    }),
+    dark: new THREE.MeshStandardMaterial({ color: 0x101318, metalness: 0.7, roughness: 0.42 }),
+    glass: new THREE.MeshPhysicalMaterial({
+      color: 0x1a2029, metalness: 0.45, roughness: 0.17, transparent: true, opacity: 0.36,
+      side: THREE.DoubleSide, depthWrite: false
+    }),
+    wire: new THREE.MeshBasicMaterial({ color: 0xd8b77d, wireframe: true, transparent: true, opacity: 0.14 }),
+    line: new THREE.LineBasicMaterial({ color: 0xd8b77d, transparent: true, opacity: 0.5 }),
+    lineSoft: new THREE.LineBasicMaterial({ color: 0xa8b1c0, transparent: true, opacity: 0.2 }),
+    node: new THREE.MeshBasicMaterial({ color: 0xf0d6a4, transparent: true, opacity: 0.75 }),
+    bar: new THREE.MeshBasicMaterial({ color: 0xd8b77d, transparent: true, opacity: 0.42 }),
+    barSoft: new THREE.MeshBasicMaterial({ color: 0xa8b1c0, transparent: true, opacity: 0.2 })
+  };
+
+  /* Inner core */
+  const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5, 1), M.inner);
+  inner.add(new THREE.LineSegments(new THREE.EdgesGeometry(inner.geometry), M.line));
+  addPart(inner, 0, 0.95, 0.12);
+
+  /* Outer structural wireframe */
+  const outer = new THREE.Mesh(new THREE.IcosahedronGeometry(0.87, 1), M.wire);
+  addPart(outer, 0, 1.85, 0.3);
+
+  /* Orbital rings */
+  const ring = (radius, tube, rot, mat, z0, z1, delay) => {
+    const m = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 8, 180), mat);
+    m.rotation.set(rot[0], rot[1], rot[2]);
+    return addPart(m, z0, z1, delay, true);
+  };
+  ring(1.12, 0.008, [Math.PI / 2.15, 0.16, 0.22], M.gold, 0, -1.65, 0.36);
+  ring(1.34, 0.0045, [-0.42, 0.18, Math.PI / 2], M.goldDim, 0, 2.05, 0.26);
+  ring(1.55, 0.0024, [Math.PI / 2, 0, 0.32], M.gold, 0, -2.35, 0.46);
+  ring(1.88, 0.0016, [Math.PI / 2.2, 0.1, 0.5], M.goldDim, 0, 2.6, 0.52);
+
+  /* Particle shell */
+  const compact = innerWidth < 900;
+  const count = compact ? 62 : 120;
+  const nodes = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.015, 0), M.node, count);
+  const dummy = new THREE.Object3D();
+  let seed = 17;
+  const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  for (let i = 0; i < count; i++) {
+    const theta = rnd() * Math.PI * 2;
+    const phi = Math.acos(2 * rnd() - 1);
+    const radius = 0.98 + rnd() * 0.72;
+    dummy.position.set(
+      Math.sin(phi) * Math.cos(theta) * radius,
+      Math.sin(phi) * Math.sin(theta) * radius,
+      Math.cos(phi) * radius * 0.72
+    );
+    dummy.scale.setScalar(0.55 + rnd() * 1.25);
+    dummy.updateMatrix();
+    nodes.setMatrixAt(i, dummy.matrix);
+  }
+  addPart(nodes, 0, 0.5, 0.22, true);
+
+  /* Floating interface panels */
+  function makePanel(w, h, r, kind) {
+    const g = new THREE.Group();
+    const shape = roundedShape(w, h, r);
+    g.add(new THREE.Mesh(new THREE.ShapeGeometry(shape, 26), M.glass));
+    const borderPts = shape.getPoints(24).map((p) => new THREE.Vector3(p.x, p.y, 0.004));
+    g.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(borderPts), M.line));
+
+    const dot = new THREE.Mesh(new THREE.CircleGeometry(0.028, 20), M.bar);
+    dot.position.set(w / 2 - 0.12, h / 2 - 0.12, 0.012);
+    g.add(dot);
+
+    const head = new THREE.Mesh(new THREE.PlaneGeometry(w * 0.46, 0.016), M.bar);
+    head.position.set(w / 2 - w * 0.27, h / 2 - 0.14, 0.012);
+    g.add(head);
+
+    const widths = kind === 'chart' ? [0.54, 0.7] : [0.66, 0.84, 0.46];
+    widths.forEach((ratio, i) => {
+      const bar = new THREE.Mesh(new THREE.PlaneGeometry(w * ratio, 0.012), M.barSoft);
+      bar.position.set(w / 2 - (w * ratio) / 2, h / 2 - 0.28 - i * 0.09, 0.012);
+      g.add(bar);
+    });
+
+    if (kind === 'chart') {
+      const pts = [];
+      for (let i = 0; i <= 22; i++) {
+        const x = -w / 2 + 0.12 + (w - 0.24) * (i / 22);
+        const y = -h / 2 + 0.14 + (Math.sin(i * 0.52) * 0.5 + 0.5) * (h - 0.62) * 0.72;
+        pts.push(new THREE.Vector3(x, y, 0.014));
+      }
+      g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), M.line));
+    }
+    return g;
+  }
+
+  const p1 = makePanel(1.1, 0.7, 0.07, 'chart');
+  p1.position.set(-1.06, 0.58, 0.42); p1.rotation.set(0.05, 0.34, -0.05);
+  addPart(p1, 0.42, 2.2, 0.18, false, new THREE.Vector3(-0.58, 0.34, 0));
+
+  const p2 = makePanel(0.94, 0.6, 0.07, 'list');
+  p2.position.set(1.08, 0.63, 0.22); p2.rotation.set(-0.04, -0.3, 0.04);
+  addPart(p2, 0.22, 2.05, 0.27, false, new THREE.Vector3(0.58, 0.3, 0));
+
+  const p3 = makePanel(1.02, 0.66, 0.07, 'chart');
+  p3.position.set(1.02, -0.7, 0.34); p3.rotation.set(-0.03, -0.22, -0.04);
+  addPart(p3, 0.34, 2.3, 0.32, false, new THREE.Vector3(0.48, -0.4, 0));
+
+  const p4 = makePanel(0.5, 0.84, 0.08, 'list');
+  p4.position.set(-1.02, -0.74, 0.26); p4.rotation.set(0.05, 0.25, 0.04);
+  addPart(p4, 0.26, 2.1, 0.4, false, new THREE.Vector3(-0.42, -0.42, 0));
+
+  /* Warm light inside the core */
+  const glow = new THREE.PointLight(0xffdfa8, 2.4, 7, 2);
+  inner.add(glow);
+
+  return { wheel: group, parts, glow };
+}
+
+/* Three.js is optional: dynamically load it, probe for WebGL, and fall
+   back to the CSS stage if either one is unavailable. */
+let THREE = null;
+try {
+  THREE = await import('three');
+} catch (err) {
+  console.warn('Three.js could not be loaded; continuing without the 3D scene.');
+}
+let glOK = false;
+if (THREE) {
+  try {
+    const probe = document.createElement('canvas');
+    const probeCtx = probe.getContext('webgl2') || probe.getContext('webgl');
+    glOK = !!probeCtx;
+    if (probeCtx) {
+      const lose = probeCtx.getExtension('WEBGL_lose_context');
+      if (lose) lose.loseContext();
+    }
+  } catch (err) {
+    glOK = false;
+  }
+}
+if (!glOK) document.body.classList.add('no-gl');
+
+/* Scroll-driven stage states (kept outside the WebGL block so the rest
+   of the scroll choreography still has a state object to drive). */
+const P = {
+  hero: () => isMobile()
+    ? { x: 0, y: 1.16, s: 0.57, rotY: -0.46 }
+    : { x: innerWidth < 1180 ? -1.16 : -1.58, y: 0.24, s: innerWidth < 1180 ? 0.86 : 1.0, rotY: -0.48 },
+  ex: () => isMobile()
+    ? { x: 0, y: 0.22, s: 0.55, rotY: -0.7 }
+    : { x: 0, y: -0.06, s: 0.92, rotY: -0.62 }
+};
+const S = { ...P.hero(), explode: 0, opacity: 1, intro: reduce ? 1 : 0 };
+
+if (glOK) {
+  try {
+    const canvas = document.getElementById('gl');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+const DPR_MAX = Math.min(devicePixelRatio, 1.5);
+let dpr = DPR_MAX;
+renderer.setPixelRatio(dpr);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.04;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+const studio = new THREE.Scene();
+studio.background = new THREE.Color(0x343b44);
+function softbox(w, h, x, y, z, intensity, color) {
+  const panel = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }));
+  panel.material.color.multiplyScalar(intensity);
+  panel.position.set(x, y, z);
+  panel.lookAt(0, 0, 0);
+  studio.add(panel);
+}
+softbox(3, 7, -4, 3, 5, 5, 0xfff2df);
+softbox(1.4, 6, 4, 1, 2, 2.6, 0xd8e7ff);
+softbox(5, 2, 0, 5, -1, 3.4, 0xffffff);
+softbox(2, 4, -3, 0, -4, 2, 0xe4edff);
+softbox(2, 9, -6, 1, 0, 1.6, 0xffffff);
+softbox(6, 5, 0, 1, 7, 0.6, 0xf1f4f8);
+const studioMap = pmrem.fromScene(studio, 0.035);
+scene.environment = studioMap.texture;
+scene.environmentIntensity = 0.85;
+studio.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+pmrem.dispose();
+
+const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 100);
+camera.position.set(0, 0, 9.4);
+
+const key = new THREE.DirectionalLight(0xfff3df, 3.2); key.position.set(-3, 4, 5); scene.add(key);
+const rimLight = new THREE.DirectionalLight(0xd2e1f2, 2.6); rimLight.position.set(5, 1.5, -4); scene.add(rimLight);
+const back = new THREE.DirectionalLight(0xe6ecf5, 1.7); back.position.set(-2, -3, -5); scene.add(back);
+const goldRim = new THREE.DirectionalLight(0xd8b77d, 0.9); goldRim.position.set(3, -0.5, -7); scene.add(goldRim);
+
+const { wheel, parts, glow } = createCore(scene);
+
+/* Data streaks */
+const LN = 80;
+const lpos = new Float32Array(LN * 6);
+const lcol = new Float32Array(LN * 6);
+const lspd = new Float32Array(LN);
+for (let i = 0; i < LN; i++) {
+  const x = (Math.random() - 0.5) * 18;
+  const y = (Math.random() - 0.5) * 9;
+  const z = -2 - Math.random() * 7;
+  const len = 0.3 + Math.random() * 1.6;
+  lpos.set([x, y, z, x + len, y, z], i * 6);
+  const gold = Math.random() < 0.3;
+  const b = 0.2 + Math.random() * 0.45;
+  const c = gold ? [0.85 * b * 1.5, b * 1.25, 0.55 * b] : [b, b, b];
+  lcol.set([...c, 0, 0, 0], i * 6);
+  lspd[i] = 0.6 + Math.random() * 1.4;
+}
+const lgeo = new THREE.BufferGeometry();
+lgeo.setAttribute('position', new THREE.BufferAttribute(lpos, 3));
+lgeo.setAttribute('color', new THREE.BufferAttribute(lcol, 3));
+const lines = new THREE.LineSegments(lgeo, new THREE.LineBasicMaterial({
+  vertexColors: true, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending, depthWrite: false
+}));
+scene.add(lines);
+
+const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+addEventListener('pointermove', (e) => {
+  if (reduce) return;
+  mouse.tx = (e.clientX / innerWidth) * 2 - 1;
+  mouse.ty = -((e.clientY / innerHeight) * 2 - 1);
+}, { passive: true });
+
+let spin = 0, last = performance.now(), frameNo = 0, slowAcc = 0, lastDprChange = 0;
+let running = true, scrollIdleAt = 0, curDpr = dpr, lastKey = '';
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  lastKey = '';
+}
+resize();
+addEventListener('resize', resize);
+
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  canvas.style.opacity = S.opacity;
+  if (S.opacity <= 0.01) {
+    running = false;
+    canvas.style.visibility = 'hidden';
+    return;
+  }
+
+  if (!reduce) {
+    mouse.x += (mouse.tx - mouse.x) * 0.05;
+    mouse.y += (mouse.ty - mouse.y) * 0.05;
+    const vel = lenis ? Math.abs(lenis.velocity) : 0;
+    const introBoost = (1 - S.intro) * 16;
+    const spinSpeed = (0.2 + Math.min(vel * 0.015, 0.7) + introBoost * 0.15) * Math.pow(1 - S.explode, 2.4);
+    spin -= spinSpeed * dt;
+    const ls = (1.2 + Math.min(vel * 0.25, 14) + introBoost * 1.5);
+    for (let i = 0; i < LN; i++) {
+      const o = i * 6, d = ls * lspd[i] * dt;
+      lpos[o] -= d; lpos[o + 3] -= d;
+      if (lpos[o + 3] < -9) {
+        const len = lpos[o + 3] - lpos[o];
+        lpos[o] = 9; lpos[o + 3] = 9 + len;
+      }
+    }
+    lgeo.attributes.position.needsUpdate = true;
+    lines.material.opacity = 0.11 * (1 - S.explode);
+    if (vel > 0.4) scrollIdleAt = now + 220;
+    const want = now < scrollIdleAt ? Math.min(1, dpr) : dpr;
+    if (want !== curDpr) { curDpr = want; renderer.setPixelRatio(want); resize(); }
+  } else {
+    lines.material.opacity = 0;
+  }
+
+  const s = S.s * (0.78 + 0.22 * smooth(S.intro));
+  wheel.scale.setScalar(s);
+  wheel.position.set(
+    S.x + (reduce ? 0 : mouse.x * 0.06),
+    S.y + (reduce ? 0 : mouse.y * 0.04),
+    0
+  );
+  wheel.rotation.y = S.rotY + (reduce ? 0 : mouse.x * 0.05) - S.explode * 0.12;
+  wheel.rotation.x = 0.06 - (reduce ? 0 : mouse.y * 0.035) + S.explode * 0.1;
+
+  for (const p of parts) {
+    const k = smooth(clamp((S.explode - p.delay) / 0.62, 0, 1));
+    p.obj.position.z = p.z0 + (p.z1 - p.z0) * k;
+    if (p.out) {
+      p.obj.position.x = p.base.x + p.out.x * k;
+      p.obj.position.y = p.base.y + p.out.y * k;
+    }
+    if (p.spins) p.obj.rotation.z = p.rotZ + spin;
+  }
+
+  glow.intensity = 2.1 + (reduce ? 0 : Math.sin(now * 0.0018) * 0.2) - S.explode * 0.35;
+
+  if (reduce) {
+    const keyStr = `${S.explode.toFixed(3)}|${S.opacity.toFixed(3)}|${S.x.toFixed(3)}|${S.y.toFixed(3)}|${S.s.toFixed(3)}|${S.rotY.toFixed(3)}|${S.intro.toFixed(2)}`;
+    if (keyStr === lastKey) { requestAnimationFrame(frame); return; }
+    lastKey = keyStr;
+  }
+
+  renderer.render(scene, camera);
+
+  if (!reduce) {
+    slowAcc = slowAcc * 0.95 + (dt > 0.024 ? 1 : 0) * 0.05;
+    if (slowAcc > 0.6 && dpr > 1 && now - lastDprChange > 1500) {
+      dpr = Math.max(1, dpr - 0.25);
+      lastDprChange = now;
+      slowAcc = 0;
+    }
+  }
+  frameNo++;
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+    gsap.ticker.add(() => {
+      if (!running && S.opacity > 0.01) {
+        running = true;
+        canvas.style.visibility = '';
+        last = performance.now();
+        requestAnimationFrame(frame);
+      }
+    });
+  } catch (err) {
+    S.opacity = 0;
+    document.body.classList.add('no-gl');
+    console.warn('The 3D scene could not start; continuing without it.', err);
+  }
+}
+
+/* =========================================================
+   Loader + intro
+   ========================================================= */
+const loader = document.querySelector('.loader');
+const heroLines = gsap.utils.toArray('.hero h1 .line > span');
+function finishIntro() {
+  body.classList.remove('is-loading');
+  if (lenis) lenis.start();
+  // The loader removes the scrollbar; recalculate pin widths once layout settles.
+  requestAnimationFrame(() => ScrollTrigger.refresh());
+  if (reduce) {
+    loader && loader.remove();
+    S.intro = 1;
+    return;
+  }
+  if (!loader) { S.intro = 1; return; }
+  const tl = gsap.timeline();
+  tl.to(loader, { yPercent: -100, duration: 0.85, ease: 'expo.inOut', onComplete: () => loader && loader.remove() })
+    .to(S, { intro: 1, duration: 2.2, ease: 'expo.out' }, 0.28)
+    .from(heroLines, { yPercent: 115, duration: 1.15, ease: 'expo.out', stagger: 0.09 }, 0.5)
+    .from('.hero-sub, .hero-ctas > *, .hero-meta', { y: 26, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07 }, 0.72)
+    .from('.nav > *', { y: -18, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06 }, 0.68)
+    .from('.scroll-cue', { opacity: 0, duration: 0.7 }, 1.05);
+}
+if (reduce) {
+  finishIntro();
+} else {
+  const lc = document.getElementById('lc');
+  const bar = document.querySelector('.loader-bar i');
+  const ld = { v: 0 };
+  const loaded = new Promise((r) => document.readyState === 'complete' ? r() : addEventListener('load', r));
+  gsap.to(ld, {
+    v: 100, duration: 1.35, ease: 'power2.inOut',
+    onUpdate: () => {
+      lc.textContent = String(Math.round(ld.v)).padStart(3, '0');
+      bar.style.transform = `scaleX(${ld.v / 100})`;
+      if (ld.v > 62) document.getElementById('loader-status').textContent = 'نقترب من الإطلاق';
+    },
+    onComplete: () => loaded.then(finishIntro)
+  });
+}
+
+/* =========================================================
+   Scroll choreography
+   ========================================================= */
+// Hero -> exploded stage
+if (!reduce) {
+  gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1, invalidateOnRefresh: true } })
+    .to(S, { x: () => P.ex().x, y: () => P.ex().y, s: () => P.ex().s, rotY: () => P.ex().rotY, ease: 'none' })
+    .to('.hero .wrap', { yPercent: -12, opacity: 0, ease: 'none' }, 0);
+} else {
+  gsap.timeline({ scrollTrigger: { trigger: '.explode', start: 'top bottom', end: 'top top', scrub: true } })
+    .to(S, { x: () => P.ex().x, y: () => P.ex().y, s: () => P.ex().s, rotY: () => P.ex().rotY, ease: 'none' });
+}
+
+// Pinned layer explosion
+const partEls = gsap.utils.toArray('.part');
+const layerEl = document.getElementById('layerNo');
+let activePart = -1;
+function setPart(p) {
+  const i = p < 0.02 ? 0 : Math.min(3, Math.floor(p * 4.2));
+  if (i === activePart) return;
+  activePart = i;
+  partEls.forEach((el, j) => el.classList.toggle('on', isMobile() ? j === i : j <= i));
+  if (layerEl) layerEl.textContent = String(i + 1).padStart(2, '0');
+}
+setPart(0);
+
+if (!reduce) {
+  gsap.to(S, {
+    explode: 1, ease: 'none',
+    scrollTrigger: {
+      trigger: '.explode', start: 'top top', end: () => '+=' + innerHeight * 2.4,
+      pin: true, scrub: 1, invalidateOnRefresh: true,
+      onUpdate: (self) => setPart(self.progress)
+    }
+  });
+  gsap.from('.explode-intro > *', { y: 36, opacity: 0, stagger: 0.1, ease: 'expo.out', duration: 1, scrollTrigger: { trigger: '.explode', start: 'top 72%' } });
+} else {
+  gsap.to(S, {
+    explode: 1, ease: 'none',
+    scrollTrigger: { trigger: '.explode', start: 'top 80%', end: 'bottom 55%', scrub: true, onUpdate: (self) => setPart(self.progress) }
+  });
+}
+
+// The solid manifesto covers the fixed stage; fade the stage out only once
+// the exploded section gives way to the solid services section.
+gsap.timeline({ scrollTrigger: { trigger: '#services', start: 'top bottom', end: 'top 55%', scrub: true } })
+  .to(S, { opacity: 0, ease: 'none' });
+
+// Manifesto word scrub
+{
+  const p = document.getElementById('mtext');
+  const walk = (n) => {
+    [...n.childNodes].forEach((c) => {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach((t) => {
+          if (!t) return;
+          if (/^\s+$/.test(t)) frag.append(t);
+          else {
+            const s = document.createElement('span');
+            s.className = 'w';
+            s.textContent = t;
+            frag.append(s);
+          }
+        });
+        c.replaceWith(frag);
+      } else if (c.classList && c.classList.contains('w')) {
+        // already wrapped (e.g. the gold final word)
+      }
+    });
+  };
+  walk(p);
+  if (!reduce) {
+    gsap.to('#mtext .w', {
+      opacity: 1, stagger: 0.1, ease: 'none',
+      scrollTrigger: { trigger: '#mtext', start: 'top 78%', end: 'bottom 45%', scrub: true }
+    });
+  }
+}
+
+// Horizontal work gallery (desktop, RTL: positive X reveals the next cards)
+const mm = gsap.matchMedia();
+mm.add('(min-width: 901px) and (prefers-reduced-motion: no-preference)', () => {
+  const track = document.querySelector('.hz-track');
+  const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+  gsap.to(track, {
+    x: () => dist(), ease: 'none',
+    scrollTrigger: { trigger: '.hz', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true }
+  });
+  gsap.from('.hz-card', {
+    opacity: 0, y: 46, stagger: 0.08, duration: 1, ease: 'expo.out',
+    scrollTrigger: { trigger: '.hz', start: 'top 72%' }
+  });
+});
+
+// Pinned "why" reveal — created after the gallery so its pin start is measured
+// against the gallery's pin spacer, not the pre-pin layout.
+if (!reduce) {
+  gsap.timeline({ scrollTrigger: { trigger: '.reveal', start: 'top top', end: () => '+=' + innerHeight * 1.55, pin: true, scrub: 1, invalidateOnRefresh: true } })
+    .to('.reveal-media', { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none', duration: 1 })
+    .to('.reveal-media .scene', { scale: 1, ease: 'none', duration: 1 }, 0)
+    .from('.reveal-title .line > span', { yPercent: 115, stagger: 0.08, duration: 0.35, ease: 'power3.out' }, 0.5)
+    .from('.stat', { y: 40, opacity: 0, stagger: 0.06, duration: 0.35, ease: 'power3.out' }, 0.62)
+    .to({}, { duration: 0.25 });
+}
+
+// Entrance reveals
+if (!reduce) {
+  gsap.utils.toArray('.sec-head, .svc, .step, .contact-card, .foot-brand, .foot-col').forEach((el) => {
+    gsap.from(el, {
+      y: 48, opacity: 0, duration: 1.05, ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 90%' }
+    });
+  });
+  gsap.utils.toArray('.faq-item').forEach((el, i) => {
+    gsap.from(el, {
+      y: 24, opacity: 0, duration: 0.7, delay: i * 0.03, ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 94%' }
+    });
+  });
+  gsap.from('.wordmark span', {
+    yPercent: 100, duration: 1.3, ease: 'expo.out',
+    scrollTrigger: { trigger: '.wordmark', start: 'top 95%' }
+  });
+}
+
+/* ---------- Marquee ---------- */
+{
+  const mq = document.getElementById('mq');
+  let x = 0;
+  let dir = -1;
+  if (!reduce) {
+    gsap.ticker.add((t, dtms) => {
+      const v = lenis ? lenis.velocity : 0;
+      if (Math.abs(v) > 0.5) dir = v > 0 ? -1 : 1;
+      x += dir * (0.6 + Math.min(Math.abs(v) * 0.35, 12)) * (dtms / 16.67);
+      const w = mq.scrollWidth / 2;
+      if (x < -w) x += w;
+      if (x > 0) x -= w;
+      mq.style.transform = `translate3d(${x}px,0,0)`;
+    });
+  }
+}
+
+/* ---------- Scroll progress + section spy ---------- */
+gsap.to('.progress i', {
+  scaleX: 1, ease: 'none',
+  scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.3 }
+});
+
+{
+  const links = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const sections = links.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if ('IntersectionObserver' in window) {
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        const id = '#' + en.target.id;
+        links.forEach((l) => {
+          const on = l.getAttribute('href') === id;
+          l.classList.toggle('is-active', on);
+          if (on) l.setAttribute('aria-current', 'location');
+          else l.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-42% 0px -52% 0px', threshold: 0 });
+    sections.forEach((s) => spy.observe(s));
+  }
+}
+
+/* ---------- Contact form: composes a WhatsApp message (no backend) ---------- */
+{
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  const name = document.getElementById('c-name');
+  const email = document.getElementById('c-email');
+  const type = document.getElementById('c-type');
+  const phone = document.getElementById('c-phone');
+  const message = document.getElementById('c-msg');
+  const setErr = (input, msg) => {
+    const field = input.closest('.field');
+    if (!field) return;
+    field.classList.toggle('invalid', !!msg);
+    const err = field.querySelector('.err');
+    if (err) err.textContent = msg || '';
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  };
+  [name, email, type, message].forEach((input) => {
+    input.addEventListener('input', () => setErr(input, ''));
+    input.addEventListener('change', () => setErr(input, ''));
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let ok = true;
+    if (name.value.trim().length < 2) { setErr(name, 'يرجى إدخال الاسم الكامل.'); ok = false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())) { setErr(email, 'يرجى إدخال بريد إلكتروني صحيح.'); ok = false; }
+    if (!type.value) { setErr(type, 'يرجى اختيار نوع المشروع.'); ok = false; }
+    if (message.value.trim().length < 10) { setErr(message, 'أخبرنا بتفاصيل أكثر (10 أحرف على الأقل).'); ok = false; }
+    if (!ok) {
+      const first = form.querySelector('[aria-invalid="true"]');
+      if (first) first.focus();
+      return;
+    }
+
+    const msg =
+      'مرحبًا نواة،\n\n' +
+      'الاسم: ' + name.value.trim() + '\n' +
+      'البريد: ' + email.value.trim() + '\n' +
+      'نوع المشروع: ' + type.value + '\n' +
+      'الهاتف: ' + (phone.value.trim() || '—') + '\n\n' +
+      message.value.trim();
+    const url = waLink(msg);
+    const subject = encodeURIComponent('مشروع جديد — ' + name.value.trim());
+    const mail = 'mailto:' + EMAIL + '?subject=' + subject + '&body=' + encodeURIComponent(msg);
+
+    window.open(url, '_blank', 'noopener');
+
+    status.hidden = false;
+    status.replaceChildren();
+    const text = document.createElement('span');
+    text.textContent = 'تم تجهيز رسالتك في واتساب للمراجعة. إن لم تفتح النافذة، استخدم الرابط: ';
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'فتح واتساب';
+    const sep = document.createElement('span');
+    sep.textContent = ' · ';
+    const b = document.createElement('a');
+    b.href = mail; b.textContent = 'أرسلها بالبريد';
+    status.append(text, a, sep, b);
+  });
+}
+
+addEventListener('load', () => ScrollTrigger.refresh());
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+</script>
+</body>
+</html>
+
